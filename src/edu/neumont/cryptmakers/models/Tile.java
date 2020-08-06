@@ -1,15 +1,8 @@
 package edu.neumont.cryptmakers.models;
 
-enum tileEnum {
-    WALL,
-    PATH,
-    PLAYER,
-    ENEMY,
-    TREASURE
-}
 public class Tile {
     private boolean isVisible = false;
-    private tileEnum type;
+    private TileEnum type;
 
 
     public boolean isVisible() {
@@ -20,11 +13,11 @@ public class Tile {
         isVisible = true;
     }
 
-    public tileEnum getType() {
+    public TileEnum getType() {
         return type;
     }
 
-    public void setType(tileEnum type) {
+    public void setType(TileEnum type) {
         this.type = type;
     }
 }
