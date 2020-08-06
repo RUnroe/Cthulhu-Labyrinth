@@ -4,6 +4,9 @@ public class Tile {
     private boolean isVisible = false;
     private TileEnum type;
 
+    public Tile(TileEnum type){
+        this.type = type;
+    }
 
     public boolean isVisible() {
         return isVisible;
