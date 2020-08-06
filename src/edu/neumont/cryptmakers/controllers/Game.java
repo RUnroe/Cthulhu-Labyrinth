@@ -1,8 +1,6 @@
 package edu.neumont.cryptmakers.controllers;
 
-import edu.neumont.cryptmakers.models.Maze;
-import edu.neumont.cryptmakers.models.Player;
-import edu.neumont.cryptmakers.models.TileEnum;
+import edu.neumont.cryptmakers.models.*;
 
 public class Game {
     private int score = 0;
@@ -27,16 +25,42 @@ public class Game {
         this.maze = newMaze;
     }
 
+    Tile monsterTile = new Tile();
+
 
     public void run() {
         //TODO: This will be the main controller to control the game
+        monsterTile.setType(TileEnum.PATH);
     }
 
-//    public void detectValidMove(Player player, int xTrans, int yTrans) {
-//        int x = player.getxPos() + xTrans;
-//        int y = player.getyPos() + yTrans;
-//        TileEnum tileType = getMaze().getMazeArray()[x][y].getType();
-//        if (tileType == TileEnum.PATH || tileType == TileEnum.WALL);
-//    }
+    public boolean detectValidMove(GameCharacter character, int xTrans, int yTrans) {
+        int x = character.getXPos() + xTrans;
+        int y = character.getYPos() + yTrans;
+        boolean isInsideMaze = x >= 0 && x < getMaze().getSize() &&
+                y >= 0 && y < getMaze().getSize();
+        if (isInsideMaze) {
+            Tile tile = getMaze().getMazeArray()[x][y];
+            TileEnum tileType = tile.getType();
+
+            if (character instanceof Player) {
+                if (tileType == TileEnum.PATH || tileType == TileEnum.WALL) {
+                    character.move(xTrans, yTrans);
+                    tile.setType(TileEnum.PLAYER);
+                    tile.setVisible();
+                    return true;
+                }
+            } else if (character instanceof Monster) {
+                if (((Monster) character).isAwake()) {
+                    getMaze().getMazeArray()[character.getXPos()][character.getYPos()] = monsterTile;
+                    monsterTile = tile;
+                    character.move(xTrans, yTrans);
+                    tile.setType(TileEnum.ENEMY);
+                    tile.setVisible();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }
