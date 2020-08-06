@@ -10,6 +10,10 @@ public class Maze {
         generate();
     }
 
+    public Tile[][] getMazeArray() {
+        return mazeArray;
+    }
+
     private Maze generate() {
         //TODO implement
         return null;

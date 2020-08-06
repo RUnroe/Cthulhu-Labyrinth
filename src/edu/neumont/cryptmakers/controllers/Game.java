@@ -1,6 +1,8 @@
 package edu.neumont.cryptmakers.controllers;
 
 import edu.neumont.cryptmakers.models.Maze;
+import edu.neumont.cryptmakers.models.Player;
+import edu.neumont.cryptmakers.models.TileEnum;
 
 public class Game {
     private int score = 0;
@@ -29,5 +31,12 @@ public class Game {
     public void run() {
         //TODO: This will be the main controller to control the game
     }
+
+//    public void detectValidMove(Player player, int xTrans, int yTrans) {
+//        int x = player.getxPos() + xTrans;
+//        int y = player.getyPos() + yTrans;
+//        TileEnum tileType = getMaze().getMazeArray()[x][y].getType();
+//        if (tileType == TileEnum.PATH || tileType == TileEnum.WALL);
+//    }
 
 }
