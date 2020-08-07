@@ -25,12 +25,12 @@ public class Game {
         this.maze = newMaze;
     }
 
-    Tile monsterTile = new Tile();
+    //Tile monsterTile = new Tile();
 
 
     public void run() {
         //TODO: This will be the main controller to control the game
-        monsterTile.setType(TileEnum.PATH);
+       // monsterTile.setType(TileEnum.PATH);
     }
 
     public boolean detectValidMove(GameCharacter character, int xTrans, int yTrans) {
@@ -39,7 +39,7 @@ public class Game {
         boolean isInsideMaze = x >= 0 && x < getMaze().getSize() &&
                 y >= 0 && y < getMaze().getSize();
         if (isInsideMaze) {
-            Tile tile = getMaze().getMazeArray()[x][y];
+            //Tile tile = getMaze().getMazeArray()[x][y];
             TileEnum tileType = tile.getType();
 
             if (character instanceof Player) {
@@ -51,8 +51,8 @@ public class Game {
                 }
             } else if (character instanceof Monster) {
                 if (((Monster) character).isAwake()) {
-                    getMaze().getMazeArray()[character.getXPos()][character.getYPos()] = monsterTile;
-                    monsterTile = tile;
+                   // getMaze().getMazeArray()[character.getXPos()][character.getYPos()] = monsterTile;
+                    //monsterTile = tile;
                     character.move(xTrans, yTrans);
                     tile.setType(TileEnum.ENEMY);
                     tile.setVisible();
