@@ -9,6 +9,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.DataInput;
 import java.io.IOException;
@@ -17,9 +19,13 @@ public class GameView {
     private static BufferedReader buffy;
 
     private JFrame frame = new JFrame();
+    private JPanel clickContainer = new JPanel();
     private JTextPane TextDisplay = new JTextPane();
     private JTextPane MazeDisplay = new JTextPane();
+    private JTextPane ScoreDisplay = new JTextPane();
 
+    private final int JFrameWidth = 700;
+    private final int JFrameHeight = 730;
 
     public GameView() {
         setupFrameView();
@@ -27,36 +33,63 @@ public class GameView {
 
     public void setupFrameView() {
         frame.setLayout(new BorderLayout());
-        SimpleAttributeSet attrs=new SimpleAttributeSet();
-        StyleConstants.setAlignment(attrs,StyleConstants.ALIGN_CENTER);
-        frame.setMinimumSize(new Dimension(700, 700));
+        frame.setMinimumSize(new Dimension(JFrameWidth, JFrameHeight));
+        clickContainer.setLayout(new BoxLayout(clickContainer, BoxLayout.Y_AXIS));
+        clickContainer.setFocusable(true);
+        clickContainer.setMinimumSize(new Dimension(JFrameWidth, JFrameHeight));
+        setupKeyPressEventListener();
 
-        //MazeDisplay settings
-        frame.getContentPane().add(MazeDisplay, BorderLayout.NORTH);
-        MazeDisplay.setEditable(false);
-        MazeDisplay.setPreferredSize(new Dimension(700, 350));
-        StyledDocument doc=(StyledDocument)MazeDisplay.getDocument();
-        doc.setParagraphAttributes(0,doc.getLength()-1,attrs,false);
-        MazeDisplay.setFont( new Font("Courier", Font.PLAIN,16));
 
-        //TextDisplay settings
-        frame.getContentPane().add(TextDisplay, BorderLayout.SOUTH);
-        TextDisplay.setEditable(false);
-        TextDisplay.setPreferredSize(new Dimension(700, 350));
-        doc=(StyledDocument)TextDisplay.getDocument();
-        doc.setParagraphAttributes(0,doc.getLength()-1,attrs,false);
-        TextDisplay.setFont( new Font("Courier", Font.PLAIN,16));
+        setupJTextPaneComponent(MazeDisplay, BorderLayout.NORTH, 350);
+        setupJTextPaneComponent(ScoreDisplay, BorderLayout.CENTER, 30);
+        setupJTextPaneComponent(TextDisplay, BorderLayout.SOUTH, 350);
 
+        frame.add(clickContainer);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
+    private void setupKeyPressEventListener() {
+        clickContainer.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                int keyCode = e.getKeyCode();
+                switch(keyCode) {
+                    case KeyEvent.VK_UP:
+                        //Try to move up
+                        displayText("up");
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        //Try to move down
+                        displayText("down");
+                        break;
+                    case KeyEvent.VK_LEFT:
+                        //Try to move left
+                        displayText("left");
+                        break;
+                    case KeyEvent.VK_RIGHT :
+                        //Try to move right
+                        displayText("right");
+                        break;
+                }
+            }
+        });
+    }
+    private void setupJTextPaneComponent(JTextPane component, String pos, int height) {
+        SimpleAttributeSet attrs=new SimpleAttributeSet();
+        StyleConstants.setAlignment(attrs,StyleConstants.ALIGN_CENTER);
+        clickContainer.add(component, pos);
+        component.setEditable(false);
+        component.setPreferredSize(new Dimension(JFrameWidth, height));
+        StyledDocument doc=(StyledDocument)component.getDocument();
+        doc.setParagraphAttributes(0,doc.getLength()-1,attrs,false);
+        component.setFont( new Font("Courier", Font.PLAIN,16));
+    }
 
 
     //Stubbed out from UML. Feel free to add any more methods that you need
     public void displayMaze(Maze m) {
-        String mazeString = "";
+        /*String mazeString = "";
         for (Tile[] tiles : m.getMazeArray()) {
             for (Tile t : tiles) {
                 if (t.isVisible()) {
@@ -72,25 +105,33 @@ public class GameView {
                         mazeString += "  ░  ";
                     }
                 } else {
-                    mazeString += ("\n   ");
+                    mazeString += ("\u2589");
                 }
 
             }
             mazeString += "\n";
         }
+        this.MazeDisplay.setText(mazeString);*/
+
+        String mazeString = "";
+        for(Tile[] tiles : m.getMazeArray()) {
+            for (Tile t : tiles) {
+                mazeString += "\u2589";
+            }
+
+
+            mazeString += "\n";
+        }
         this.MazeDisplay.setText(mazeString);
     }
 
-    public void displayScore() {
-
+    public void displayTurnCount(int turnCount) {
+        this.ScoreDisplay.setText("Turn count: " + turnCount);
     }
 
 
-    public void setMazeDisplay(Maze maze) {
-        //this.MazeDisplay.setText(maze.toString());
 
-    }
-    public void setTextDisplay(String text) {
+    public void displayText(String text) {
         this.TextDisplay.setText(text);
     }
 

@@ -3,11 +3,6 @@ package edu.neumont.cryptmakers.controllers;
 import edu.neumont.cryptmakers.models.*;
 import edu.neumont.cryptmakers.views.GameView;
 
-import javax.swing.*;
-
-import java.awt.*;
-
-import static edu.neumont.cryptmakers.views.GameView.*;
 
 
 public class Game {
@@ -36,16 +31,23 @@ public class Game {
         this.maze = newMaze;
     }
 
-    //Tile monsterTile = new Tile();
 
 
     public void run() {
         //TODO: This will be the main controller to control the game
-       // monsterTile.setType(TileEnum.PATH);
+
+        updateDisplay();
+        updateText("There is a wall");
+
+
+    }
+
+    private void updateDisplay() {
         view.displayMaze(maze);
-        view.setTextDisplay("There is a wall in front of you");
-
-
+        view.displayTurnCount(turnCount);
+    }
+    private void updateText(String output) {
+        view.displayText(output);
     }
 
     public boolean detectValidMove(GameCharacter character, int xTrans, int yTrans) {
