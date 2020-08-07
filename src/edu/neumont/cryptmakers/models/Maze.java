@@ -138,7 +138,7 @@ public class Maze {
     private int length() {
         return this.maze[0].length;
     }
-    public int getSize(){
-        return maze.length;
+    public Tile[][] getMazeArray(){
+        return maze;
     }
 }
