@@ -22,6 +22,10 @@ public class Maze {
         return mazeArray;
     }
 
+    public int getSize() {
+        return size;
+    }
+
     private Maze generate() {
         //TODO implement
         return null;
