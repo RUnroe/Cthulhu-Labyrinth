@@ -11,6 +11,7 @@ public class Main {
             //TODO: Starting menu
             Game game = new Game();
             game.run();
+            keepPlaying = false;
             //TODO: prompt user if they want to play again. set returned bool to keepPlaying variable
         }
 

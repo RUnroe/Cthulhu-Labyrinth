@@ -4,40 +4,94 @@ import edu.neumont.cryptmakers.models.Maze;
 import edu.neumont.cryptmakers.models.Tile;
 import edu.neumont.cryptmakers.models.TileEnum;
 
+import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import java.awt.*;
 import java.io.BufferedReader;
+import java.io.DataInput;
 import java.io.IOException;
 
 public class GameView {
     private static BufferedReader buffy;
 
+    private JFrame frame = new JFrame();
+    private JTextPane TextDisplay = new JTextPane();
+    private JTextPane MazeDisplay = new JTextPane();
+
+
+    public GameView() {
+        setupFrameView();
+    }
+
+    public void setupFrameView() {
+        frame.setLayout(new BorderLayout());
+        SimpleAttributeSet attrs=new SimpleAttributeSet();
+        StyleConstants.setAlignment(attrs,StyleConstants.ALIGN_CENTER);
+        frame.setMinimumSize(new Dimension(700, 700));
+
+        //MazeDisplay settings
+        frame.getContentPane().add(MazeDisplay, BorderLayout.NORTH);
+        MazeDisplay.setEditable(false);
+        MazeDisplay.setPreferredSize(new Dimension(700, 350));
+        StyledDocument doc=(StyledDocument)MazeDisplay.getDocument();
+        doc.setParagraphAttributes(0,doc.getLength()-1,attrs,false);
+        MazeDisplay.setFont( new Font("Courier", Font.PLAIN,16));
+
+        //TextDisplay settings
+        frame.getContentPane().add(TextDisplay, BorderLayout.SOUTH);
+        TextDisplay.setEditable(false);
+        TextDisplay.setPreferredSize(new Dimension(700, 350));
+        doc=(StyledDocument)TextDisplay.getDocument();
+        doc.setParagraphAttributes(0,doc.getLength()-1,attrs,false);
+        TextDisplay.setFont( new Font("Courier", Font.PLAIN,16));
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+
+
     //Stubbed out from UML. Feel free to add any more methods that you need
     public void displayMaze(Maze m) {
-        System.out.println();
+        String mazeString = "";
         for (Tile[] tiles : m.getMazeArray()) {
             for (Tile t : tiles) {
                 if (t.isVisible()) {
                     if (t.getType() == TileEnum.WALL) {
-                        System.out.print("█████");
+                        mazeString += "█████";
                     } else if (t.getType() == TileEnum.PLAYER) {
-                        System.out.print("  P  ");
+                        mazeString += "  P  ";
                     } else if (t.getType() == TileEnum.TREASURE) {
-                        System.out.print("  T  ");
+                        mazeString += "  T  ";
                     } else if (t.getType() == TileEnum.ENEMY) {
-                        System.out.print("  E  ");
+                        mazeString += "  E  ";
                     } else if (t.getType() == TileEnum.PATH) {
-                        System.out.print("  ░  ");
+                        mazeString += "  ░  ";
                     }
                 } else {
-                    System.out.println("   ");
+                    mazeString += ("\n   ");
                 }
 
             }
-            System.out.println();
+            mazeString += "\n";
         }
+        this.MazeDisplay.setText(mazeString);
     }
 
     public void displayScore() {
 
+    }
+
+
+    public void setMazeDisplay(Maze maze) {
+        //this.MazeDisplay.setText(maze.toString());
+
+    }
+    public void setTextDisplay(String text) {
+        this.TextDisplay.setText(text);
     }
 
     public static int promptForInt(String prompt, int min, int max) {
