@@ -37,7 +37,11 @@ public class GameView {
         clickContainer.setLayout(new BoxLayout(clickContainer, BoxLayout.Y_AXIS));
         clickContainer.setFocusable(true);
         clickContainer.setMinimumSize(new Dimension(JFrameWidth, JFrameHeight));
-        setupKeyPressEventListener();
+        setupKeyPressEventListener(clickContainer);
+        setupKeyPressEventListener(TextDisplay);
+        setupKeyPressEventListener(MazeDisplay);
+        setupKeyPressEventListener(ScoreDisplay);
+
 
 
         setupJTextPaneComponent(MazeDisplay, BorderLayout.NORTH, 350);
@@ -50,8 +54,8 @@ public class GameView {
         frame.setVisible(true);
     }
 
-    private void setupKeyPressEventListener() {
-        clickContainer.addKeyListener(new KeyAdapter() {
+    private void setupKeyPressEventListener(JComponent component) {
+        component.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 switch(keyCode) {
