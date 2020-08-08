@@ -114,7 +114,7 @@ public class GameView {
         this.MazeDisplay.setText(mazeString);*/
 
         String mazeString = "";
-        for(Tile[] tiles : m.getMazeArray()) {
+        for(Tile[] tiles : m.getMaze()) {
             for (Tile t : tiles) {
                 mazeString += "\u2589";
             }
