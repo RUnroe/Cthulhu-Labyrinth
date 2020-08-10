@@ -33,7 +33,6 @@ public class Tile {
     public Tile(TileEnum type, int x, int y)
     {
         setType(type);
-        //setLabel(label);
         setX(x);
         setY(y);
     }
@@ -58,7 +57,7 @@ public class Tile {
         {
             for (int x = 0; x < xSize; x++)
             {
-                //if the current maze cell matches any of the translated cells save it aproprietly
+                //if the current maze cell matches any of the translated cells save it
                 //also ignores coordinates outside the level
                 if (maze[x][y].getX() == left && maze[x][y].getY() == getY() && left >= 0 )
                     neighbors.add(maze[x][y]);

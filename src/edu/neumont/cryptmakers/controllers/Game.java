@@ -8,7 +8,7 @@ import edu.neumont.cryptmakers.views.GameView;
 public class Game {
 
     private int score = 0;
-    private int mazeSize = 5; //TODO: Randomize a maze size within the params listed in the spec
+    private int mazeSize = 15; //TODO: Randomize a maze size within the params listed in the spec
     private Maze maze = new Maze(mazeSize, mazeSize);
     private int turnCount = 0;
     private boolean gameOver = false;

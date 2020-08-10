@@ -25,6 +25,7 @@ public class Maze {
     {
         initializeMaze();
         growingTree();
+        placeTreasure();
         placeStart();
 
         System.out.println("Maze generated");
@@ -44,35 +45,35 @@ public class Maze {
         else
             y = getYSize()-1;
         //stores the direct neighbors of the random cell
-        ArrayList<Tile> neighbours;
+        ArrayList<Tile> neighbors;
         //stores the direct adjacent neighbors of each neighbor
         ArrayList<Tile> adjacents;
         boolean open = false;
 
         //Repeats unless the cell is valid, which means it is open and not a pathway
-        while(maze[x][y].getType().equals(TileEnum.PATH)||open==false)
+        while(maze[x][y].getType() == TileEnum.PATH||open==false)
         {
             //stores if all necessary neighbors of the randomly chosen coordinate are open
             open = false;
             //random x value
             x = random.nextInt(getXSize());
             //determines the neighbors of the random cell
-            neighbours = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
+            neighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
             //cycles though the neighbors of the random cell
-            for (int neighbour = 0; neighbour < neighbours.size(); neighbour++)
+            for (int neighbor = 0; neighbor < neighbors.size(); neighbor++)
             {
                 //if the neighbor is a pathway it is open and vice versa
-                open = neighbours.get(neighbour).getType().equals(TileEnum.PATH);
+                open = neighbors.get(neighbor).getType() == TileEnum.PATH;
                 //if the neighbor is a pathway/is open then continue
                 if (open == true)
                 {
                     //determine the adjacent Cells of the open neighbor
-                    adjacents = neighbours.get(neighbour).neighborTiles(getMaze(), getXSize(), getYSize());
+                    adjacents = neighbors.get(neighbor).neighborTiles(getMaze(), getXSize(), getYSize());
                     //cycle though the adjacents Cells of the open neighbor
                     for (Tile adjacent : adjacents)
                     {
                         //if a adjacent of the open neighbor is also a pathway/open this is a valid location and exit the loop
-                        if (adjacent.getType().equals(TileEnum.PATH))
+                        if (adjacent.getType() == TileEnum.PATH)
                         {
                             open = true;
                             break;
@@ -136,7 +137,7 @@ public class Maze {
         //stores the carved tiles
         ArrayList<Tile> tree = new ArrayList<Tile>();
         //stores the neighbors of the current tile
-        ArrayList<Tile> neighbours = new ArrayList<Tile>();
+        ArrayList<Tile> neighbors = new ArrayList<Tile>();
         //stores the adjacents of all the neighbor tiles
         ArrayList<Tile> adjacents = new ArrayList<Tile>();
         //stores the current tile
@@ -168,32 +169,32 @@ public class Maze {
             if (tree.size()>0)
                 currentTile = tree.get(tree.size()-1);
             //neighbors become the neighbors of the currentTile
-            neighbours = currentTile.neighborTiles(maze, getXSize(), getYSize());
+            neighbors = currentTile.neighborTiles(maze, getXSize(), getYSize());
             //cycle though the neighbors
-            for (int neighbour = 0; neighbour < neighbours.size(); neighbour++)
+            for (int neighbor = 0; neighbor < neighbors.size(); neighbor++)
             {
                 //adjacents become the adjacent tiles to the current neighbor cycle
-                adjacents = neighbours.get(neighbour).neighborTiles(maze, getXSize(), getYSize());
+                adjacents = neighbors.get(neighbor).neighborTiles(maze, getXSize(), getYSize());
                 //counts the number of carvable tiles
                 int carvable = 0;
                 //loops though the adjacent tiles of the current neighbor cycle
                 for (Tile adjacent : adjacents)
                 {
                     //if the adjacent is a wall it is potentially carvable so add it to the count
-                    if (adjacent.getType().equals(TileEnum.WALL))
+                    if (adjacent.getType() == TileEnum.WALL )
                         carvable++;
                 }
                 //if there are three potentially carvable adjacents in one neighbor that is carvable, that neighbor is carvable
-                if (carvable >= 3 && neighbours.get(neighbour).getType().equals(TileEnum.WALL))
+                if (carvable >= 3 && neighbors.get(neighbor).getType() == TileEnum.WALL)
                 {
                     //current tile is equal to one of its random neighbors that is carvable
-                    currentTile = randomNeighbour(neighbours);
+                    currentTile = randomNeighbor(neighbors);
                     //add that random neighbor/ currentCell to the list of carved tiles
                     tree.add(currentTile);
                     //save the coordinates of the random neighbor/currentTile
                     x = currentTile.getX();
                     y = currentTile.getY();
-                    //carve into the random neighbor/currentTyle
+                    //carve into the random neighbor/currentTile
                     maze[x][y].setType(TileEnum.PATH);
                     //exit loop/stop checking neighbors of the old currentTile
                     break;
@@ -216,18 +217,18 @@ public class Maze {
         }
     }
 
-    public Tile randomNeighbour(ArrayList<Tile> neighbors)
+    public Tile randomNeighbor(ArrayList<Tile> neighbors)
     {
-        Tile neighbour;
+        Tile neighbor;
         ArrayList<Tile> adjacents;
         Random random = new Random();
         int index;
         int carvable;
 
         index = random.nextInt(neighbors.size());
-        neighbour = neighbors.get(index);
+        neighbor = neighbors.get(index);
 
-        adjacents = neighbour.neighborTiles(maze, getXSize(), getYSize());
+        adjacents = neighbor.neighborTiles(maze, getXSize(), getYSize());
         carvable = 0;
         for (Tile adjacent : adjacents)
         {
@@ -235,19 +236,48 @@ public class Maze {
                 carvable++;
         }
 
-        while (neighbour.getType() != TileEnum.WALL || carvable < 3)
+        while (neighbor.getType() != TileEnum.WALL || carvable < 3)
         {
             index = random.nextInt(neighbors.size());
-            neighbour = neighbors.get(index);
-            adjacents = neighbour.neighborTiles(maze, getXSize(), getYSize());
+            neighbor = neighbors.get(index);
+            adjacents = neighbor.neighborTiles(maze, getXSize(), getYSize());
             carvable = 0;
             for (Tile adjacent : adjacents)
             {
-                if (adjacent.getType().equals(TileEnum.WALL))
+                if (adjacent.getType() == TileEnum.WALL)
                     carvable++;
             }
         }
-        return neighbour;
+        return neighbor;
+    }
+
+    public void placeTreasure()
+    {
+        Random random = new Random();
+
+            int x = random.nextInt(getXSize());
+            int y = random.nextInt(getYSize());
+            boolean accessible = false;
+            ArrayList<Tile> neighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
+            while (maze[x][y].getType() != TileEnum.WALL|| accessible == false)
+            {
+                accessible = false;
+                x = random.nextInt(getXSize());
+                y = random.nextInt(getYSize());
+                neighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
+                for (int neighbor = 0; neighbor < neighbors.size(); neighbor++)
+                {
+                    if (maze[x][y].getType() == TileEnum.WALL && neighbors.get(neighbor).getType() == TileEnum.PATH)
+                    {
+                        accesible = true;
+                        break;
+                    }
+                }
+                if (accesible == true)
+                    break;
+            }
+            maze[x][y].setType(TileEnum.TREASURE);
+            printMaze();
     }
 
     public void printMaze()
@@ -263,10 +293,12 @@ public class Maze {
                     if (maze[x][y].getType() == TileEnum.WALL) {
                         System.out.print("*");
                     } else if(maze[x][y].getType() == TileEnum.PATH){
-                        System.out.print(" ");
+                        System.out.print(".");
                     } else if(maze[x][y].getType() == TileEnum.PLAYER){
                         System.out.print("P");
-                    } else{
+                    } else if(maze[x][y].getType() == TileEnum.TREASURE){
+                        System.out.print("T");
+                    }else{
                         System.out.print("S");
                     }
                     //last id in row
