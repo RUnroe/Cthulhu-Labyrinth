@@ -5,5 +5,6 @@ public enum TileEnum {
     PATH,
     PLAYER,
     ENEMY,
-    TREASURE
+    TREASURE,
+    START
 }

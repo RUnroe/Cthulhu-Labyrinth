@@ -18,11 +18,11 @@ import java.io.IOException;
 public class GameView {
     private static BufferedReader buffy;
 
-    private JFrame frame = new JFrame();
-    private JPanel clickContainer = new JPanel();
-    private JTextPane TextDisplay = new JTextPane();
-    private JTextPane MazeDisplay = new JTextPane();
-    private JTextPane ScoreDisplay = new JTextPane();
+    private static JFrame frame = new JFrame();
+    private static JPanel clickContainer = new JPanel();
+    private static JTextPane TextDisplay = new JTextPane();
+    private static JTextPane MazeDisplay = new JTextPane();
+    private static JTextPane ScoreDisplay = new JTextPane();
 
     private final int JFrameWidth = 700;
     private final int JFrameHeight = 730;
@@ -31,19 +31,52 @@ public class GameView {
         setupFrameView();
     }
 
+    public static JFrame getFrame() {
+        return frame;
+    }
+
+    public static void setFrame(JFrame frame) {
+        GameView.frame = frame;
+    }
+
+    public static JPanel getClickContainer() {
+        return clickContainer;
+    }
+
+    public static void setClickContainer(JPanel clickContainer) {
+        GameView.clickContainer = clickContainer;
+    }
+
+    public static JTextPane getTextDisplay() {
+        return TextDisplay;
+    }
+
+    public static void setTextDisplay(JTextPane textDisplay) {
+        TextDisplay = textDisplay;
+    }
+
+    public static JTextPane getMazeDisplay() {
+        return MazeDisplay;
+    }
+
+    public static void setMazeDisplay(JTextPane mazeDisplay) {
+        MazeDisplay = mazeDisplay;
+    }
+
+    public static JTextPane getScoreDisplay() {
+        return ScoreDisplay;
+    }
+
+    public static void setScoreDisplay(JTextPane scoreDisplay) {
+        ScoreDisplay = scoreDisplay;
+    }
+
     public void setupFrameView() {
         frame.setLayout(new BorderLayout());
         frame.setMinimumSize(new Dimension(JFrameWidth, JFrameHeight));
         clickContainer.setLayout(new BoxLayout(clickContainer, BoxLayout.Y_AXIS));
         clickContainer.setFocusable(true);
         clickContainer.setMinimumSize(new Dimension(JFrameWidth, JFrameHeight));
-        setupKeyPressEventListener(clickContainer);
-        setupKeyPressEventListener(TextDisplay);
-        setupKeyPressEventListener(MazeDisplay);
-        setupKeyPressEventListener(ScoreDisplay);
-
-
-
         setupJTextPaneComponent(MazeDisplay, BorderLayout.NORTH, 350);
         setupJTextPaneComponent(ScoreDisplay, BorderLayout.CENTER, 30);
         setupJTextPaneComponent(TextDisplay, BorderLayout.SOUTH, 350);
@@ -54,31 +87,31 @@ public class GameView {
         frame.setVisible(true);
     }
 
-    private void setupKeyPressEventListener(JComponent component) {
-        component.addKeyListener(new KeyAdapter() {
-            public void keyPressed(KeyEvent e) {
-                int keyCode = e.getKeyCode();
-                switch(keyCode) {
-                    case KeyEvent.VK_UP:
-                        //Try to move up
-                        displayText("up");
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        //Try to move down
-                        displayText("down");
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        //Try to move left
-                        displayText("left");
-                        break;
-                    case KeyEvent.VK_RIGHT :
-                        //Try to move right
-                        displayText("right");
-                        break;
-                }
-            }
-        });
-    }
+//    private void setupKeyPressEventListener(JComponent component) {
+//        component.addKeyListener(new KeyAdapter() {
+//            public void keyPressed(KeyEvent e) {
+//                int keyCode = e.getKeyCode();
+//                switch(keyCode) {
+//                    case KeyEvent.VK_UP:
+//                        //Try to move up
+//                        displayText("up");
+//                        break;
+//                    case KeyEvent.VK_DOWN:
+//                        //Try to move down
+//                        displayText("down");
+//                        break;
+//                    case KeyEvent.VK_LEFT:
+//                        //Try to move left
+//                        displayText("left");
+//                        break;
+//                    case KeyEvent.VK_RIGHT :
+//                        //Try to move right
+//                        displayText("right");
+//                        break;
+//                }
+//            }
+//        });
+//    }
     private void setupJTextPaneComponent(JTextPane component, String pos, int height) {
         SimpleAttributeSet attrs=new SimpleAttributeSet();
         StyleConstants.setAlignment(attrs,StyleConstants.ALIGN_CENTER);
@@ -118,9 +151,33 @@ public class GameView {
         this.MazeDisplay.setText(mazeString);*/
 
         String mazeString = "";
-        for(Tile[] tiles : m.getMazeArray()) {
+        for(Tile[] tiles : m.getMaze()) {
             for (Tile t : tiles) {
-                mazeString += "\u2589";
+                TileEnum type = t.getType();
+                switch (type) {
+                    case PLAYER:
+                        mazeString += " P";
+                        break;
+                    case ENEMY:
+                        mazeString += "M";
+                        break;
+                    case TREASURE:
+                        mazeString += "T";
+                        break;
+                    case START:
+                        mazeString += "S";
+                        break;
+                    case PATH:
+                        mazeString += "'~,";
+                        break;
+                    case WALL:
+                        mazeString += "\u2589 ";
+                        break;
+                    default:
+                        mazeString += "#";
+                        break;
+                }
+
             }
 
 
@@ -135,8 +192,8 @@ public class GameView {
 
 
 
-    public void displayText(String text) {
-        this.TextDisplay.setText(text);
+    public static void displayText(String text) {
+        TextDisplay.setText(text);
     }
 
     public static int promptForInt(String prompt, int min, int max) {
