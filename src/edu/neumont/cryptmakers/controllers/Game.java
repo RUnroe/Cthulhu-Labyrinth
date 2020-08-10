@@ -87,10 +87,12 @@ public class Game {
             for (int hPos = 0; hPos < maze.getYSize(); hPos++)
             {
                 Tile t = maze.getMaze()[vPos][hPos];
-                if (t.getType() == TileEnum.PLAYER) {
-                    player.setHPos(hPos);
-                    player.setVPos(vPos);
-                    t.discover();
+                switch (t.getType()) {
+                    case PLAYER:
+                        player.setHPos(hPos);
+                        player.setVPos(vPos);
+                    case START:
+                        t.discover();
                 }
             }
         }

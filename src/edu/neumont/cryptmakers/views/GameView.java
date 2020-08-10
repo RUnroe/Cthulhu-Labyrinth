@@ -180,6 +180,7 @@ public class GameView {
         StyleConstants.setAlignment(attrs,StyleConstants.ALIGN_CENTER);
         clickContainer.add(component, pos);
         component.setEditable(false);
+        component.setFocusable(false);
         component.setPreferredSize(new Dimension(JFrameWidth, height));
         StyledDocument doc=(StyledDocument)component.getDocument();
         doc.setParagraphAttributes(0,doc.getLength()-1,attrs,false);
