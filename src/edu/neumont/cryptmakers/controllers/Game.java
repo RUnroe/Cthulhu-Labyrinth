@@ -4,13 +4,11 @@ import edu.neumont.cryptmakers.models.*;
 import edu.neumont.cryptmakers.views.GameView;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
 import static edu.neumont.cryptmakers.views.GameView.displayText;
-import static edu.neumont.cryptmakers.views.GameView.getFrame;
 
 
 public class Game {
@@ -21,14 +19,30 @@ public class Game {
     private int turnCount = 0;
     private int turnSpeed = 1;
     private int moveCount = 1;
-    private boolean mapShown = false;
+    private static boolean mapShown = false;
+    private static boolean is64x = false;
     private boolean gameOver = false;
-    public static boolean is64x = false;
     Player player = new Player();
     Monster monster = new Monster();
     Tile monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
 
     private GameView view = new GameView();
+
+    public static boolean isMapShown() {
+        return mapShown;
+    }
+
+    public static void setMapShown(boolean mapShown) {
+        Game.mapShown = mapShown;
+    }
+
+    public static boolean is64x() {
+        return is64x;
+    }
+
+    public static void set64x(boolean is64x) {
+        Game.is64x = is64x;
+    }
 
     public Player getPlayer() {
         return player;
@@ -178,22 +192,22 @@ public class Game {
                         updateDisplay();
                         break;
                     case KeyEvent.VK_M:
-                        for (Tile[] t : maze.getMaze()) {
-                            if (!mapShown) {
-                                for (Tile tile : t) {
-                                    tile.discover();
-                                }
-                            } else {
-                                for (Tile tile : t) {
-                                    tile.setVisible(false);
-                                }
-                            }
-                        }
+//                        for (Tile[] t : maze.getMaze()) {
+//                            if (!mapShown) {
+//                                for (Tile tile : t) {
+//                                    tile.discover();
+//                                }
+//                            } else {
+//                                for (Tile tile : t) {
+//                                    tile.setVisible(false);
+//                                }
+//                            }
+//                        }
+                            setMapShown(!mapShown);
                             updateDisplay();
-                            mapShown = !mapShown;
                             break;
                     case KeyEvent.VK_R:
-                        is64x = !is64x;
+                        set64x(!is64x());
                         updateDisplay();
                 }
             }

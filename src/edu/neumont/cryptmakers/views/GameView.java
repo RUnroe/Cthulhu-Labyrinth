@@ -1,5 +1,6 @@
 package edu.neumont.cryptmakers.views;
 
+import edu.neumont.cryptmakers.controllers.Game;
 import edu.neumont.cryptmakers.models.Maze;
 import edu.neumont.cryptmakers.models.Tile;
 import edu.neumont.cryptmakers.models.TileEnum;
@@ -216,41 +217,41 @@ public class GameView {
         for (Tile[] tiles : m.getMaze()) {
             for (Tile t : tiles) {
                 TileEnum type = t.getType();
-                if (t.isVisible()) {
+                if (t.isVisible() || Game.isMapShown()) {
                     switch (type) {
                         case PLAYER:
 //                            mazeString += " P";
-                            t.setImage(is64x ? getScaledImage(playerSprite) : playerSprite);
+                            t.setImage(is64x() ? getScaledImage(playerSprite) : playerSprite);
                             break;
                         case ENEMY:
 //                            mazeString += "M";
-//                        t.setImage(is64x ? getScaledImage(playerSprite) : playerSprite);
+//                        t.setImage(is64x( ? getScaledImage(playerSprite) : playerSprite);
                             break;
                         case TREASURE:
 //                            mazeString += "T";
-                            t.setImage(is64x ? getScaledImage(treasureSprite) : treasureSprite);
+                            t.setImage(is64x() ? getScaledImage(treasureSprite) : treasureSprite);
                             break;
                         case START:
 //                            mazeString += "S";
-                            t.setImage(is64x ? getScaledImage(startSprite) : startSprite);
+                            t.setImage(is64x() ? getScaledImage(startSprite) : startSprite);
                             break;
                         case PATH:
 //                            mazeString += "'~,";
-                            t.setImage(is64x ? getScaledImage(pathSprite) : pathSprite);
+                            t.setImage(is64x() ? getScaledImage(pathSprite) : pathSprite);
                             break;
                         case WALL:
 //                            mazeString += "\u2589 ";
-                            t.setImage(is64x ? getScaledImage(wallSprites[(t.imageNum >= 4 ? 0 : 1)]) : wallSprites[(t.imageNum >= 4 ? 0 : 1)]);
+                            t.setImage(is64x() ? getScaledImage(wallSprites[(t.imageNum >= 4 ? 0 : 1)]) : wallSprites[(t.imageNum >= 4 ? 0 : 1)]);
                             break;
                         default:
 //                            mazeString += "#";
-                        t.setImage(is64x ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
+                        t.setImage(is64x() ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
                             break;
                     }
-                } else if (t.getType() == TileEnum.PLAYER) {
+                } else if (t.getType() == TileEnum.PLAYER || t.getType() == TileEnum.START) {
                     t.discover();
                 } else {
-                    t.setImage(is64x ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
+                    t.setImage(is64x() ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
                 }
 
             }
