@@ -260,7 +260,7 @@ public class Maze {
             int y = random.nextInt(getYSize());
             boolean accessible = false;
             ArrayList<Tile> neighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
-            while (maze[x][y].getType() != TileEnum.WALL || accessible == false)
+            while (maze[x][y].getType() != TileEnum.PATH || accessible == false)
             {
                 accessible = false;
                 x = random.nextInt(getXSize());
@@ -268,7 +268,7 @@ public class Maze {
                 neighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
                 for (int neighbor = 0; neighbor < neighbors.size(); neighbor++)
                 {
-                    if (maze[x][y].getType() == TileEnum.WALL && neighbors.get(neighbor).getType() == TileEnum.PATH)
+                    if (maze[x][y].getType() == TileEnum.PATH && neighbors.get(neighbor).getType() == TileEnum.PATH)
                     {
                         accesible = true;
                         break;
@@ -297,7 +297,7 @@ public class Maze {
             neighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
             for (int neighbor = 0; neighbor < neighbors.size(); neighbor++)
             {
-                if (maze[x][y].getType() == TileEnum.WALL && neighbors.get(neighbor).getType() == TileEnum.PATH)
+                if ((maze[x][y].getType() == TileEnum.WALL || maze[x][y].getType() == TileEnum.PATH) && neighbors.get(neighbor).getType() == TileEnum.PATH)
                 {
                     accesible = true;
                     break;
