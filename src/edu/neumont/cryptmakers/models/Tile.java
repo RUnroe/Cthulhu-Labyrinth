@@ -1,10 +1,13 @@
 package edu.neumont.cryptmakers.models;
 
+import javax.swing.*;
 import java.util.ArrayList;
+
+import static edu.neumont.cryptmakers.controllers.Game.genRandNum;
 
 public class Tile {
 
-    boolean visible = true;
+    boolean visible = false;
 
 
     // Tile object that makes it easy to store multiple pieces of information in one array
@@ -17,6 +20,8 @@ public class Tile {
     // Stores the identifier for the cell
 
     private TileEnum type;
+    private ImageIcon image = new ImageIcon("src/images/sprite_darkness.png");
+    public final int imageNum = (genRandNum(1, 10));
 
     // Stores the x-coordinate of the cell
 
@@ -36,6 +41,14 @@ public class Tile {
         //setLabel(label);
         setX(x);
         setY(y);
+    }
+
+    public ImageIcon getImage() {
+        return image;
+    }
+
+    public void setImage(ImageIcon image) {
+        this.image = image;
     }
 
     // Returns the tile's neighbors in grids/maps
@@ -146,5 +159,13 @@ public class Tile {
 
     public boolean isVisible(){
         return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public void discover() {
+        setVisible(true);
     }
 }
