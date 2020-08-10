@@ -28,7 +28,7 @@ public class GameView {
     private static JLabel[][] imageLabels;
     public static final ImageIcon[] playerSprites = new ImageIcon[5];
     public static ImageIcon playerSprite;
-    public static final ImageIcon monsterSprite = new ImageIcon("src/images/sprite_monster.png");
+    public static final ImageIcon monsterSprite = new ImageIcon("src/images/sprite_mage.png");
     public static final ImageIcon pathSprite = new ImageIcon("src/images/sprite_floor.png");
     public static final ImageIcon[] wallSprites = {new ImageIcon("src/images/sprite_wall.png"), new ImageIcon("src/images/sprite_water.png")};
     public static final ImageIcon treasureSprite = new ImageIcon("src/images/sprite_treasure.png");
