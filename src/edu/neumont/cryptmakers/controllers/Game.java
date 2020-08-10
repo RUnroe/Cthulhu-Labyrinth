@@ -82,9 +82,10 @@ public class Game {
         }
         updateDisplay();
         setupKeyPressEventListener(GameView.getClickContainer());
-        setupKeyPressEventListener(GameView.getTextDisplay());
-        setupKeyPressEventListener(GameView.getMazeDisplay());
-        setupKeyPressEventListener(GameView.getScoreDisplay());
+//        setupKeyPressEventListener(GameView.getMapContainer());
+//        setupKeyPressEventListener(GameView.getTextDisplay());
+//        setupKeyPressEventListener(GameView.getMazeDisplay());
+//        setupKeyPressEventListener(GameView.getScoreDisplay());
 
 
     }
