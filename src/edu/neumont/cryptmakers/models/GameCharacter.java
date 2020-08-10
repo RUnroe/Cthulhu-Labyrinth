@@ -1,23 +1,23 @@
 package edu.neumont.cryptmakers.models;
 
 public abstract class GameCharacter {
-    private int vTrans;
-    private int hTrans;
+    private int vPos;
+    private int hPos;
 
     public int getVPos() {
-        return vTrans;
+        return vPos;
     }
 
     public void setVPos(int xPos) {
-        this.vTrans = xPos;
+        this.vPos = xPos;
     }
 
     public int getHPos() {
-        return hTrans;
+        return hPos;
     }
 
     public void setHPos(int yPos) {
-        this.hTrans = yPos;
+        this.hPos = yPos;
     }
 
     public void move(int hTrans, int vTrans) {
