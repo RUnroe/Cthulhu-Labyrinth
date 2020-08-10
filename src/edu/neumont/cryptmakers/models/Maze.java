@@ -126,9 +126,9 @@ public class Maze {
         //stores all the carvable tiles
         ArrayList<Tile> totalTiles = new ArrayList<Tile>();
         //loops through carvable tiles
-        for (int y = 1; y < getYSize()-1; y++)
+        for (int x = 1; x < getXSize()-1; x++)
         {
-            for (int x = 1; x < getXSize()-1; x++)
+            for (int y = 1; y < getYSize()-1; y++)
             {
                 totalTiles.add(maze[x][y]);
             }
@@ -207,11 +207,12 @@ public class Maze {
 
     public void initializeMaze()
     {
-        for (int y = 0; y < getYSize(); y++)
+        for (int x = 0; x < getXSize(); x++)
         {
-            for (int x = 0; x < getXSize(); x++)
+            for (int y = 0; y < getYSize(); y++)
             {
                 maze[x][y] = new Tile(TileEnum.WALL, x, y);
+
             }
         }
     }
