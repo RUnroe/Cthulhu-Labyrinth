@@ -26,6 +26,7 @@ public class Maze {
         initializeMaze();
         growingTree();
         placeTreasure();
+        placeMonster();
         placeStart();
 
         System.out.println("Maze generated");
@@ -259,7 +260,7 @@ public class Maze {
             int y = random.nextInt(getYSize());
             boolean accessible = false;
             ArrayList<Tile> neighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
-            while (maze[x][y].getType() != TileEnum.WALL|| accessible == false)
+            while (maze[x][y].getType() != TileEnum.WALL || accessible == false)
             {
                 accessible = false;
                 x = random.nextInt(getXSize());
@@ -280,6 +281,35 @@ public class Maze {
             printMaze();
     }
 
+    public void placeMonster()
+    {
+        Random random = new Random();
+
+        int x = random.nextInt(getXSize());
+        int y = random.nextInt(getYSize());
+        boolean accessible = false;
+        ArrayList<Tile> neighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
+        while (maze[x][y].getType() != TileEnum.WALL|| accessible == false)
+        {
+            accessible = false;
+            x = random.nextInt(getXSize());
+            y = random.nextInt(getYSize());
+            neighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
+            for (int neighbor = 0; neighbor < neighbors.size(); neighbor++)
+            {
+                if (maze[x][y].getType() == TileEnum.WALL && neighbors.get(neighbor).getType() == TileEnum.PATH)
+                {
+                    accesible = true;
+                    break;
+                }
+            }
+            if (accesible == true)
+                break;
+        }
+        maze[x][y].setType(TileEnum.ENEMY);
+        printMaze();
+    }
+
     public void printMaze()
     {
         //loops though all y-values
@@ -298,20 +328,15 @@ public class Maze {
                         System.out.print("P");
                     } else if(maze[x][y].getType() == TileEnum.TREASURE){
                         System.out.print("T");
+                    } else if(maze[x][y].getType() == TileEnum.ENEMY){
+                        System.out.print("M");
                     }else{
                         System.out.print("S");
                     }
                     //last id in row
                 }else
-                if (maze[x][y].getType() == TileEnum.WALL) {
                     System.out.println("*");
-                } else if(maze[x][y].getType() == TileEnum.PATH){
-                    System.out.println(" ");
-                } else if(maze[x][y].getType() == TileEnum.PLAYER){
-                    System.out.println("P");
-                } else{
-                    System.out.println("S");
-                }
+
             }
         }
     }
