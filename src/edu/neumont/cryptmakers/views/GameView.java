@@ -9,26 +9,67 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
-import java.io.DataInput;
 import java.io.IOException;
+
+import static edu.neumont.cryptmakers.controllers.Game.genRandNum;
+import static edu.neumont.cryptmakers.controllers.Game.is64x;
 
 public class GameView {
     private static BufferedReader buffy;
 
     private static JFrame frame = new JFrame();
     private static JPanel clickContainer = new JPanel();
+    private static JPanel mapContainer = new JPanel();
     private static JTextPane TextDisplay = new JTextPane();
     private static JTextPane MazeDisplay = new JTextPane();
     private static JTextPane ScoreDisplay = new JTextPane();
+    private static JTextPane SpeedDisplay = new JTextPane();
+    private static JLabel[][] imageLabels;
+    public static final ImageIcon[] playerSprites = new ImageIcon[5];
+    public static ImageIcon playerSprite;
+    public static final ImageIcon monsterSprite = new ImageIcon("src/images/sprite_mage.png");
+    public static final ImageIcon pathSprite = new ImageIcon("src/images/sprite_floor.png");
+    public static final ImageIcon[] wallSprites = {new ImageIcon("src/images/sprite_wall.png"), new ImageIcon("src/images/sprite_water.png")};
+    public static final ImageIcon treasureSprite = new ImageIcon("src/images/sprite_treasure.png");
+    public static final ImageIcon startSprite = new ImageIcon("src/images/sprite_door.png");
+    public static final ImageIcon undiscoveredSprite = new ImageIcon("src/images/sprite_darkness.png");
 
     private final int JFrameWidth = 700;
     private final int JFrameHeight = 730;
 
     public GameView() {
         setupFrameView();
+        for (int i = 0; i < 5; i++) {
+            playerSprites[i] = new ImageIcon("src/images/sprite_player_"+ (i+1) +".png");
+            int pImgNum = genRandNum(1, 10);
+            playerSprite = playerSprites[pImgNum <= 2 ? 0 : pImgNum <= 4 ? 1 :
+                    pImgNum <= 6 ? 2 : pImgNum <= 8 ? 3 : 4 ];
+        }
+    }
+
+    public static JTextPane getSpeedDisplay() {
+        return SpeedDisplay;
+    }
+
+    public static void setSpeedDisplay(JTextPane speedDisplay) {
+        SpeedDisplay = speedDisplay;
+    }
+
+    public static JPanel getMapContainer() {
+        return mapContainer;
+    }
+
+    public static void setMapContainer(JPanel mapContainer) {
+        GameView.mapContainer = mapContainer;
+    }
+
+    public static JLabel[][] getImageLabels() {
+        return imageLabels;
+    }
+
+    public static void setImageLabels(JLabel[][] imageLabels) {
+        GameView.imageLabels = imageLabels;
     }
 
     public static JFrame getFrame() {
@@ -77,14 +118,35 @@ public class GameView {
         clickContainer.setLayout(new BoxLayout(clickContainer, BoxLayout.Y_AXIS));
         clickContainer.setFocusable(true);
         clickContainer.setMinimumSize(new Dimension(JFrameWidth, JFrameHeight));
-        setupJTextPaneComponent(MazeDisplay, BorderLayout.NORTH, 350);
+        mapContainer.setLayout(new GridLayout(16,16));
+//        mapContainer.
+//        mapContainer.setSize(16*16, 16*16);
+//        JPanel tilePanel = new JPane( new GridLayout(0, 2, 5, 5) );
+//        tilePanel.add( new GameTile(...) );
+//        tilePanel.add( new GameTile(...) );
+
+        JPanel wrapper = new JPanel( new GridBagLayout() );
+        wrapper.add(mapContainer, new GridBagConstraints() );
+        frame.add(wrapper, BorderLayout.NORTH );
+//        frame.add(wrapper, BorderLayout.LINE_END);
+
+//        setupJTextPaneComponent(MazeDisplay, BorderLayout.NORTH, 350);
         setupJTextPaneComponent(ScoreDisplay, BorderLayout.CENTER, 30);
-        setupJTextPaneComponent(TextDisplay, BorderLayout.SOUTH, 350);
+        setupJTextPaneComponent(TextDisplay, BorderLayout.CENTER, 30);
+        setupJTextPaneComponent(SpeedDisplay, BorderLayout.CENTER, 300);
 
         frame.add(clickContainer);
+//        frame.add(mapContainer);
+//        mapContainer.add(new JLabel(new ImageIcon("src/images/sprite_floor.png")));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
+
+    }
+
+    public ImageIcon getScaledImage(ImageIcon imageIcon) {
+        return new ImageIcon(imageIcon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
     }
 
 //    private void setupKeyPressEventListener(JComponent component) {
@@ -150,40 +212,67 @@ public class GameView {
         }
         this.MazeDisplay.setText(mazeString);*/
 
-        String mazeString = "";
-        for(Tile[] tiles : m.getMaze()) {
+//        String mazeString = "";
+        for (Tile[] tiles : m.getMaze()) {
             for (Tile t : tiles) {
                 TileEnum type = t.getType();
-                switch (type) {
-                    case PLAYER:
-                        mazeString += " P";
-                        break;
-                    case ENEMY:
-                        mazeString += "M";
-                        break;
-                    case TREASURE:
-                        mazeString += "T";
-                        break;
-                    case START:
-                        mazeString += "S";
-                        break;
-                    case PATH:
-                        mazeString += "'~,";
-                        break;
-                    case WALL:
-                        mazeString += "\u2589 ";
-                        break;
-                    default:
-                        mazeString += "#";
-                        break;
+                if (t.isVisible()) {
+                    switch (type) {
+                        case PLAYER:
+//                            mazeString += " P";
+                            t.setImage(is64x ? getScaledImage(playerSprite) : playerSprite);
+                            break;
+                        case ENEMY:
+//                            mazeString += "M";
+//                        t.setImage(is64x ? getScaledImage(playerSprite) : playerSprite);
+                            break;
+                        case TREASURE:
+//                            mazeString += "T";
+                            t.setImage(is64x ? getScaledImage(treasureSprite) : treasureSprite);
+                            break;
+                        case START:
+//                            mazeString += "S";
+                            t.setImage(is64x ? getScaledImage(startSprite) : startSprite);
+                            break;
+                        case PATH:
+//                            mazeString += "'~,";
+                            t.setImage(is64x ? getScaledImage(pathSprite) : pathSprite);
+                            break;
+                        case WALL:
+//                            mazeString += "\u2589 ";
+                            t.setImage(is64x ? getScaledImage(wallSprites[(t.imageNum >= 4 ? 0 : 1)]) : wallSprites[(t.imageNum >= 4 ? 0 : 1)]);
+                            break;
+                        default:
+//                            mazeString += "#";
+                        t.setImage(is64x ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
+                            break;
+                    }
+                } else if (t.getType() == TileEnum.PLAYER) {
+                    t.discover();
+                } else {
+                    t.setImage(is64x ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
                 }
 
             }
 
 
-            mazeString += "\n";
+//            mazeString += "\n";
         }
-        this.MazeDisplay.setText(mazeString);
+//        this.MazeDisplay.setText(mazeString);
+        mapContainer.removeAll();
+        for (int vPos = 0; vPos < m.getXSize(); vPos++) {
+            for (int hPos = 0; hPos < m.getYSize(); hPos++)
+            {
+                Tile t = m.getMaze()[vPos][hPos];
+                JLabel imageLabel = new JLabel(t.getImage());
+                imageLabel.setHorizontalAlignment(SwingConstants.LEFT);
+                imageLabel.setVerticalAlignment(SwingConstants.TOP);
+                GameView.getMapContainer().add(imageLabel);
+                GameView.getFrame().revalidate();
+                GameView.getFrame().repaint();
+
+            }
+        }
     }
 
     public void displayTurnCount(int turnCount) {

@@ -4,10 +4,13 @@ import edu.neumont.cryptmakers.models.*;
 import edu.neumont.cryptmakers.views.GameView;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 import static edu.neumont.cryptmakers.views.GameView.displayText;
+import static edu.neumont.cryptmakers.views.GameView.getFrame;
 
 
 public class Game {
@@ -18,7 +21,9 @@ public class Game {
     private int turnCount = 0;
     private int turnSpeed = 1;
     private int moveCount = 1;
+    private boolean mapShown = false;
     private boolean gameOver = false;
+    public static boolean is64x = false;
     Player player = new Player();
     Monster monster = new Monster();
     Tile monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
@@ -54,7 +59,6 @@ public class Game {
     public void run() {
         //TODO: This will be the main controller to control the game
 
-        updateDisplay();
         updateText("There is a wall");
         for (int vPos = 0; vPos < maze.getXSize(); vPos++)
         {
@@ -64,10 +68,11 @@ public class Game {
                 if (t.getType() == TileEnum.PLAYER) {
                     player.setHPos(hPos);
                     player.setVPos(vPos);
+                    t.discover();
                 }
-
             }
         }
+        updateDisplay();
         setupKeyPressEventListener(GameView.getClickContainer());
         setupKeyPressEventListener(GameView.getTextDisplay());
         setupKeyPressEventListener(GameView.getMazeDisplay());
@@ -76,7 +81,13 @@ public class Game {
 
     }
 
+    public static int genRandNum(int min, int max) {
+        int range = max - min + 1;
+        return new Random().nextInt(range) + min;
+    }
+
     private void updateDisplay() {
+        GameView.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
         view.displayMaze(maze);
         view.displayTurnCount(turnCount);
     }
@@ -100,11 +111,11 @@ public class Game {
                 } else {
                     moveCount++;
                 }
+                tile.discover();
                 if (tileType == TileEnum.PATH) {
                     maze.getMaze()[player.getVPos()][player.getHPos()].setType(TileEnum.PATH);
                     character.move(hTrans, vTrans);
                     tile.setType(TileEnum.PLAYER);
-//                    tile.setVisible();
                     return true;
                 }
             } else if (character instanceof Monster) {
@@ -113,7 +124,6 @@ public class Game {
                     monsterTile = tile;
                     character.move(hTrans, vTrans);
                     tile.setType(TileEnum.ENEMY);
-//                    tile.setVisible();
                     return true;
                 }
             }
@@ -128,6 +138,7 @@ public class Game {
                 boolean isValidMove = false;
                 switch(keyCode) {
                     case KeyEvent.VK_UP:
+                    case KeyEvent.VK_W:
                         //Try to move up
                         isValidMove = detectValidMove(player, 0, -1);
                         displayText("up " + isValidMove);
@@ -163,7 +174,26 @@ public class Game {
                         } else {
                             turnSpeed = 1;
                         }
-
+                        updateDisplay();
+                        break;
+                    case KeyEvent.VK_M:
+                        for (Tile[] t : maze.getMaze()) {
+                            if (!mapShown) {
+                                for (Tile tile : t) {
+                                    tile.discover();
+                                }
+                            } else {
+                                for (Tile tile : t) {
+                                    tile.setVisible(false);
+                                }
+                            }
+                        }
+                            updateDisplay();
+                            mapShown = !mapShown;
+                            break;
+                    case KeyEvent.VK_R:
+                        is64x = !is64x;
+                        updateDisplay();
                 }
             }
         });
