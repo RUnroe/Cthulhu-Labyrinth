@@ -226,7 +226,7 @@ public class GameView {
                             break;
                         case ENEMY:
 //                            mazeString += "M";
-//                        t.setImage(is64x( ? getScaledImage(playerSprite) : playerSprite);
+                        t.setImage(is64x() ? getScaledImage(monsterSprite) : monsterSprite);
                             break;
                         case TREASURE:
 //                            mazeString += "T";

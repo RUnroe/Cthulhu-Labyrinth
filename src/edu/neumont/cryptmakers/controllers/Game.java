@@ -21,7 +21,7 @@ public class Game {
 
     private Random random = new Random();
     //private int mazeSize = random.nextInt(13) + 8;
-    private int mazeSize = 18; //TODO: Randomize a maze size within the params listed in the spec
+    private int mazeSize = 16; //TODO: Randomize a maze size within the params listed in the spec
 
     private Maze maze = new Maze(mazeSize, mazeSize);
     private int turnCount = 0;
