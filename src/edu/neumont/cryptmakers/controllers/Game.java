@@ -3,6 +3,7 @@ package edu.neumont.cryptmakers.controllers;
 import edu.neumont.cryptmakers.models.*;
 import edu.neumont.cryptmakers.views.GameView;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -13,10 +14,17 @@ import static edu.neumont.cryptmakers.views.GameView.displayText;
 import static edu.neumont.cryptmakers.views.GameView.getFrame;
 
 
+
+
 public class Game {
 
     private int score = 0;
-    private int mazeSize = 16; //TODO: Randomize a maze size within the params listed in the spec
+
+
+    private Random random = new Random();
+    //private int mazeSize = random.nextInt(13) + 8;
+    private int mazeSize = 18; //TODO: Randomize a maze size within the params listed in the spec
+
     private Maze maze = new Maze(mazeSize, mazeSize);
     private int turnCount = 0;
     private int turnSpeed = 1;
