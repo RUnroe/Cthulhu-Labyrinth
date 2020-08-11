@@ -298,7 +298,7 @@ public class Maze {
             neighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
             for (int neighbor = 0; neighbor < neighbors.size(); neighbor++)
             {
-                if ((maze[x][y].getType() == TileEnum.WALL || maze[x][y].getType() == TileEnum.PATH) && neighbors.get(neighbor).getType() == TileEnum.PATH)
+                if ((maze[x][y].getType() == TileEnum.PATH) && neighbors.get(neighbor).getType() == TileEnum.PATH)
                 {
                     accesible = true;
                     break;
