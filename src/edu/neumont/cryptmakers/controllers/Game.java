@@ -21,7 +21,7 @@ public class Game {
 
     private Random random = new Random();
     //private int mazeSize = random.nextInt(13) + 8;
-    private int mazeSize = 16; //TODO: Randomize a maze size within the params listed in the spec
+    private static int mazeSize = 16; //TODO: Randomize a maze size within the params listed in the spec
 
     private Maze maze = new Maze(mazeSize, mazeSize);
     private int turnCount = 0;
@@ -35,6 +35,14 @@ public class Game {
     Tile monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
 
     private GameView view = new GameView();
+
+    public static int getMazeSize() {
+        return mazeSize;
+    }
+
+    public static void setMazeSize(int mazeSize) {
+        Game.mazeSize = mazeSize;
+    }
 
     public static boolean isMapShown() {
         return mapShown;
@@ -130,18 +138,20 @@ public class Game {
             TileEnum tileType = tile.getType();
 
             if (character instanceof Player) {
-                if (moveCount == turnSpeed) {
-                    moveCount = 1;
-                    turnCount++;
-                } else {
-                    moveCount++;
-                }
+
                 tile.discover();
-                if (tileType == TileEnum.PATH) {
+                if (tileType != TileEnum.WALL) {
                     maze.getMaze()[player.getVPos()][player.getHPos()].setType(TileEnum.PATH);
                     character.move(hTrans, vTrans);
                     tile.setType(TileEnum.PLAYER);
+                    if (moveCount >= turnSpeed) {
+                        incrementTurn();
+                    } else {
+                        moveCount++;
+                    }
                     return true;
+                } else {
+                    incrementTurn();
                 }
             } else if (character instanceof Monster) {
                 if (((Monster) character).isAwake()) {
@@ -190,9 +200,7 @@ public class Game {
                     case KeyEvent.VK_S:
                         //Change speed
                         if (moveCount > 1) {
-                            turnCount++;
-                            moveCount = 1;
-                            updateDisplay();
+                            incrementTurn();
                         }
                         if (turnSpeed == 1) {
                             turnSpeed = 3;
@@ -222,6 +230,12 @@ public class Game {
                 }
             }
         });
+    }
+
+    private void incrementTurn() {
+        turnCount++;
+        moveCount = 1;
+        updateDisplay();
     }
 
 }

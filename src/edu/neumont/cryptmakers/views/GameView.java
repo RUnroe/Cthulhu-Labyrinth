@@ -13,8 +13,7 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import static edu.neumont.cryptmakers.controllers.Game.genRandNum;
-import static edu.neumont.cryptmakers.controllers.Game.is64x;
+import static edu.neumont.cryptmakers.controllers.Game.*;
 
 public class GameView {
     private static BufferedReader buffy;
@@ -29,12 +28,12 @@ public class GameView {
     private static JLabel[][] imageLabels;
     public static final ImageIcon[] playerSprites = new ImageIcon[5];
     public static ImageIcon playerSprite;
-    public static final ImageIcon monsterSprite = new ImageIcon("src/images/sprite_mage.png");
-    public static final ImageIcon pathSprite = new ImageIcon("src/images/sprite_floor.png");
-    public static final ImageIcon[] wallSprites = {new ImageIcon("src/images/sprite_wall.png"), new ImageIcon("src/images/sprite_water.png")};
-    public static final ImageIcon treasureSprite = new ImageIcon("src/images/sprite_treasure.png");
-    public static final ImageIcon startSprite = new ImageIcon("src/images/sprite_door.png");
-    public static final ImageIcon undiscoveredSprite = new ImageIcon("src/images/sprite_darkness.png");
+    public static final ImageIcon monsterSprite = new ImageIcon("images/sprite_mage.png");
+    public static final ImageIcon pathSprite = new ImageIcon("images/sprite_floor.png");
+    public static final ImageIcon[] wallSprites = {new ImageIcon("images/sprite_wall.png"), new ImageIcon("images/sprite_water.png")};
+    public static final ImageIcon treasureSprite = new ImageIcon("images/sprite_treasure.png");
+    public static final ImageIcon startSprite = new ImageIcon("images/sprite_door.png");
+    public static final ImageIcon undiscoveredSprite = new ImageIcon("images/sprite_darkness.png");
 
     private final int JFrameWidth = 700;
     private final int JFrameHeight = 730;
@@ -42,7 +41,7 @@ public class GameView {
     public GameView() {
         setupFrameView();
         for (int i = 0; i < 5; i++) {
-            playerSprites[i] = new ImageIcon("src/images/sprite_player_"+ (i+1) +".png");
+            playerSprites[i] = new ImageIcon("images/sprite_player_"+ (i+1) +".png");
             int pImgNum = genRandNum(1, 10);
             playerSprite = playerSprites[pImgNum <= 2 ? 0 : pImgNum <= 4 ? 1 :
                     pImgNum <= 6 ? 2 : pImgNum <= 8 ? 3 : 4 ];
@@ -119,7 +118,7 @@ public class GameView {
         clickContainer.setLayout(new BoxLayout(clickContainer, BoxLayout.Y_AXIS));
         clickContainer.setFocusable(true);
         clickContainer.setMinimumSize(new Dimension(JFrameWidth, JFrameHeight));
-        mapContainer.setLayout(new GridLayout(16,16));
+        mapContainer.setLayout(new GridLayout(getMazeSize(), getMazeSize()));
 //        mapContainer.
 //        mapContainer.setSize(16*16, 16*16);
 //        JPanel tilePanel = new JPane( new GridLayout(0, 2, 5, 5) );
