@@ -117,9 +117,9 @@ public class GameView {
         frame.setLayout(new BorderLayout());
         frame.setMinimumSize(new Dimension(JFrameWidth, JFrameHeight));
         clickContainer.setLayout(new BoxLayout(clickContainer, BoxLayout.Y_AXIS));
-        clickContainer.setFocusable(true);
+        clickContainer.setFocusable(false);
         clickContainer.setMinimumSize(new Dimension(JFrameWidth, JFrameHeight));
-        mapContainer.setLayout(new GridLayout(16,16));
+        mapContainer.setLayout(new GridLayout(Game.getMazeSize(), Game.getMazeSize()));
 //        mapContainer.
 //        mapContainer.setSize(16*16, 16*16);
 //        JPanel tilePanel = new JPane( new GridLayout(0, 2, 5, 5) );
@@ -128,7 +128,9 @@ public class GameView {
 
         JPanel wrapper = new JPanel( new GridBagLayout() );
         wrapper.add(mapContainer, new GridBagConstraints() );
+        wrapper.setFocusable(true);
         frame.add(wrapper, BorderLayout.NORTH );
+        wrapper.requestFocusInWindow();
 //        frame.add(wrapper, BorderLayout.LINE_END);
 
 //        setupJTextPaneComponent(MazeDisplay, BorderLayout.NORTH, 350);

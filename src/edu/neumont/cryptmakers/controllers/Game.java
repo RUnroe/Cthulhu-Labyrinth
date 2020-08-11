@@ -4,6 +4,7 @@ import edu.neumont.cryptmakers.models.*;
 import edu.neumont.cryptmakers.views.GameView;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
@@ -14,7 +15,7 @@ import static edu.neumont.cryptmakers.views.GameView.displayText;
 public class Game {
 
     private int score = 0;
-    private int mazeSize = 16; //TODO: Randomize a maze size within the params listed in the spec
+    private static int mazeSize = 16; //TODO: Randomize a maze size within the params listed in the spec
     private Maze maze = new Maze(mazeSize, mazeSize);
     private int turnCount = 0;
     private int turnSpeed = 1;
@@ -27,6 +28,14 @@ public class Game {
     Tile monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
 
     private GameView view = new GameView();
+
+    public static int getMazeSize() {
+        return mazeSize;
+    }
+
+    public static void setMazeSize(int mazeSize) {
+        Game.mazeSize = mazeSize;
+    }
 
     public static boolean isMapShown() {
         return mapShown;
@@ -89,8 +98,9 @@ public class Game {
             }
         }
         updateDisplay();
-        setupKeyPressEventListener(GameView.getClickContainer());
-//        setupKeyPressEventListener(GameView.getMapContainer());
+//        setupKeyPressEventListener(GameView.getClickContainer());
+        setupKeyPressEventListener(GameView.getMapContainer());
+        GameView.getMapContainer().requestFocusInWindow();
 //        setupKeyPressEventListener(GameView.getTextDisplay());
 //        setupKeyPressEventListener(GameView.getMazeDisplay());
 //        setupKeyPressEventListener(GameView.getScoreDisplay());
