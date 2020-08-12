@@ -86,6 +86,40 @@ public class Tile {
         return neighbors;
     }
 
+    public ArrayList<Tile> neighborTiles(Tile[][] maze, int xSize, int ySize, int radius)
+    {
+        //stores all neighbors
+        ArrayList<Tile> neighbors = new ArrayList<Tile>();
+        //left neighbor translation
+        int left = getX()-radius;
+        //right neighbor translation
+        int right = getX()+radius;
+        //up neighbor translation
+        int up = getY()-radius;
+        //down neighbor translation
+        int down = getY()+radius;
+
+        //cycles though all cells
+        for (int y = 0; y < ySize; y++)
+        {
+            for (int x = 0; x < xSize; x++)
+            {
+                //if the current maze cell matches any of the translated cells save it
+                //also ignores coordinates outside the level
+                if (maze[x][y].getX() == left && maze[x][y].getY() == getY() && left >= 0 )
+                    neighbors.add(maze[x][y]);
+                if (maze[x][y].getX() == right && maze[x][y].getY() == getY() && right < xSize)
+                    neighbors.add(maze[x][y]);
+                if (maze[x][y].getX() == getX() && maze[x][y].getY() == up && up >= 0)
+                    neighbors.add(maze[x][y]);
+                if (maze[x][y].getX() == getX() && maze[x][y].getY() == down && down < ySize)
+                    neighbors.add(maze[x][y]);
+            }
+        }
+        //returns found neighbours
+        return neighbors;
+    }
+
     // Sets the location on the x-axis
 
     public void setX(int x)

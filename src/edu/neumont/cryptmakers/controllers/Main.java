@@ -7,7 +7,7 @@ public class Main {
     }
     public static void run() {
         boolean keepPlaying = true;
-        while(keepPlaying) {
+
             //TODO: Starting menu
             Game game = new Game();
             game.run();
@@ -15,5 +15,4 @@ public class Main {
             //TODO: prompt user if they want to play again. set returned bool to keepPlaying variable
         }
 
-    }
 }

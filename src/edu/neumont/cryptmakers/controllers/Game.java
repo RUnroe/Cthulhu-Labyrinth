@@ -7,6 +7,7 @@ import edu.neumont.cryptmakers.views.GameView;
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.LineNumberReader;
 import java.util.Random;
 
 import static edu.neumont.cryptmakers.views.GameView.displayText;
@@ -21,9 +22,9 @@ public class Game {
 
     private Random random = new Random();
     //private int mazeSize = random.nextInt(13) + 8;
-    private static int mazeSize = 16; //TODO: Randomize a maze size within the params listed in the spec
+    private static int mazeSize; //TODO: Randomize a maze size within the params listed in the spec
 
-    private Maze maze = new Maze(mazeSize, mazeSize);
+    private Maze maze;
     private int turnCount = 0;
     private int turnSpeed = 1;
     private int moveCount = 1;
@@ -32,9 +33,9 @@ public class Game {
     private boolean gameOver = false;
     Player player = new Player();
     Monster monster = new Monster();
-    Tile monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
+    Tile monsterTile;
 
-    private GameView view = new GameView();
+    private GameView view ;
 
     public static int getMazeSize() {
         return mazeSize;
@@ -88,7 +89,9 @@ public class Game {
 
     public void run() {
         //TODO: This will be the main controller to control the game
-
+        mazeSizePrompt();
+        monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
+        view = new GameView();
         updateText("There is a wall");
         for (int vPos = 0; vPos < maze.getXSize(); vPos++)
         {
@@ -112,6 +115,41 @@ public class Game {
 //        setupKeyPressEventListener(GameView.getScoreDisplay());
 
 
+    }
+
+    public void mazeSizePrompt(){
+        boolean invalid = true; //store if user needs to be re-prompted
+        int tempSize = 0;
+        while(invalid){
+            try {
+                String sizeStr = JOptionPane.showInputDialog("Please enter the size of the maze between 6 and 16"); //open prompt for user input
+                if (sizeStr != null && !sizeStr.isEmpty()) { //make sure the user entered something
+                    //System.out.println("sizeStr is not empty");
+                    tempSize = Integer.parseInt(sizeStr); //set the size to the user input
+                    //System.out.println(tempSize);
+                    if (tempSize < 6 || tempSize > 16) { //the maze can be no larger than 16 and no smaller than 6
+                        //error message pop up
+                        JOptionPane.showMessageDialog(null, "Please enter a number between 6 and 16", "BAD SIZE", JOptionPane.WARNING_MESSAGE);
+                        invalid = true;
+                    } else { //user entered a valid size
+                        //System.out.println(tempSize);
+                        invalid = false;
+                    }
+                } else{
+                    invalid = false;
+                    System.exit(1); //exit the program if the user presses cancel
+                }
+            } catch(NumberFormatException nfe){
+                //error message pop up
+                JOptionPane.showMessageDialog(null, "Please enter a number between 6 and 16", "BAD SIZE", JOptionPane.WARNING_MESSAGE);
+            }
+
+        } // end while
+
+        tempSize += 2; //add 2 to compensate for the outer walls of the maze
+        mazeSize = tempSize;
+
+        maze = new Maze(mazeSize, mazeSize); //create the maze object with the user sizes
     }
 
     public static int genRandNum(int min, int max) {
