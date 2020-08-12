@@ -25,7 +25,7 @@ public class Game {
 
     private Maze maze = new Maze(mazeSize, mazeSize);
     private int turnCount = 0;
-    private int turnSpeed = 1;
+    private int turnSpeed = 3;
     private int moveCount = 1;
     private static boolean mapShown = false;
     private static boolean is64x = false;
@@ -144,6 +144,12 @@ public class Game {
                     maze.getMaze()[player.getVPos()][player.getHPos()].setType(TileEnum.PATH);
                     character.move(hTrans, vTrans);
                     tile.setType(TileEnum.PLAYER);
+                    if(tileType == TileEnum.TREASURE){
+                        ((Player) character).setTreasure(true);
+                      //Change speed
+                        turnSpeed = 1;
+                        updateDisplay();
+                    }
                     if (moveCount >= turnSpeed) {
                         incrementTurn();
                     } else {
@@ -197,18 +203,18 @@ public class Game {
                         displayText("right " + isValidMove);
                         updateDisplay();
                         break;
-                    case KeyEvent.VK_S:
-                        //Change speed
-                        if (moveCount > 1) {
-                            incrementTurn();
-                        }
-                        if (turnSpeed == 1) {
-                            turnSpeed = 3;
-                        } else {
-                            turnSpeed = 1;
-                        }
-                        updateDisplay();
-                        break;
+//                    case KeyEvent.VK_S:
+//                        //Change speed
+//                        if (moveCount > 1) {
+//                            incrementTurn();
+//                        }
+//                        if (turnSpeed == 1) {
+//                            turnSpeed = 3;
+//                        } else {
+//                            turnSpeed = 1;
+//                        }
+//                        updateDisplay();
+//                        break;
                     case KeyEvent.VK_M:
 //                        for (Tile[] t : maze.getMaze()) {
 //                            if (!mapShown) {
