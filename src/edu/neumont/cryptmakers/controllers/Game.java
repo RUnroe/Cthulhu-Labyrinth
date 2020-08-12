@@ -146,7 +146,7 @@ public class Game {
                     tile.setType(TileEnum.PLAYER);
                     if(tileType == TileEnum.TREASURE){
                         ((Player) character).setTreasure(true);
-                      //Change speed
+                        //Change speed
                         turnSpeed = 1;
                         updateDisplay();
                     }
