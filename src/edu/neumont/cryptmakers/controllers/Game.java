@@ -155,7 +155,7 @@ public class Game {
                 }
             } else if (character instanceof Monster) {
                 if (((Monster) character).isAwake()) {
-                    getMaze().getMaze()[character.getVPos()][character.getHPos()] = monsterTile;
+                    maze.getMaze()[character.getVPos()][character.getHPos()] = monsterTile;
                     monsterTile = tile;
                     character.move(hTrans, vTrans);
                     tile.setType(TileEnum.ENEMY);
@@ -235,6 +235,8 @@ public class Game {
     private void incrementTurn() {
         turnCount++;
         moveCount = 1;
+        int[] translation = monster.getNextMove(player.getHPos(), player.getVPos());
+        detectValidMove(monster, translation[0], translation[1]);
         updateDisplay();
     }
 
