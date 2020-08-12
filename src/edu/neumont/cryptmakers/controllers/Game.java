@@ -22,7 +22,7 @@ public class Game {
 
     private Random random = new Random();
     //private int mazeSize = random.nextInt(13) + 8;
-    private static int mazeSize = 16; //TODO: Randomize a maze size within the params listed in the spec
+    private static int mazeSize; //TODO: Randomize a maze size within the params listed in the spec
 
     private Maze maze;
     private int turnCount = 0;
@@ -35,7 +35,7 @@ public class Game {
     Monster monster = new Monster();
     Tile monsterTile;
 
-    private GameView view = new GameView();
+    private GameView view ;
 
     public static int getMazeSize() {
         return mazeSize;
@@ -91,6 +91,7 @@ public class Game {
         //TODO: This will be the main controller to control the game
         mazeSizePrompt();
         monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
+        view = new GameView();
         updateText("There is a wall");
         for (int vPos = 0; vPos < maze.getXSize(); vPos++)
         {
@@ -146,8 +147,9 @@ public class Game {
         } // end while
 
         tempSize += 2; //add 2 to compensate for the outer walls of the maze
+        mazeSize = tempSize;
 
-        maze = new Maze(tempSize, tempSize); //create the maze object with the user sizes
+        maze = new Maze(mazeSize, mazeSize); //create the maze object with the user sizes
     }
 
     public static int genRandNum(int min, int max) {
