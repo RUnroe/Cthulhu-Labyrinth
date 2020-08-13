@@ -9,9 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
-import static edu.neumont.cryptmakers.views.GameView.displayText;
-
-
+import static edu.neumont.cryptmakers.views.GameView.*;
 
 
 public class Game {
@@ -30,11 +28,22 @@ public class Game {
     private static boolean mapShown = false;
     private static boolean is64x = false;
     private boolean gameOver = false;
+    private boolean hasEscaped = false;
+    private boolean isValidMove = false;
+    private String direction = "still";
     Player player = new Player();
     Monster monster = new Monster();
     Tile monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
 
     private GameView view = new GameView();
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
 
     public static int getMazeSize() {
         return mazeSize;
@@ -122,6 +131,7 @@ public class Game {
     private void updateDisplay() {
         GameView.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
         view.displayMaze(maze);
+        GameView.displayText((hasEscaped ? "You've escaped!" : direction + isValidMove));
         view.displayTurnCount(turnCount);
     }
     private void updateText(String output) {
@@ -140,7 +150,7 @@ public class Game {
             if (character instanceof Player) {
 
                 tile.discover();
-                if (tileType != TileEnum.WALL) {
+                if (tileType != TileEnum.WALL && tileType != TileEnum.START) {
                     maze.getMaze()[player.getVPos()][player.getHPos()].setType(TileEnum.PATH);
                     character.move(hTrans, vTrans);
                     tile.setType(TileEnum.PLAYER);
@@ -159,6 +169,9 @@ public class Game {
                 } else {
                     incrementTurn();
                 }
+                if (tileType == TileEnum.START) {
+                    hasEscaped = true;
+                }
             } else if (character instanceof Monster) {
                 if (((Monster) character).isAwake()) {
                     getMaze().getMaze()[character.getVPos()][character.getHPos()] = monsterTile;
@@ -169,6 +182,10 @@ public class Game {
                 }
             }
         }
+        if (hasEscaped) {
+            updateDisplay();
+            GameView.createEndWindow();
+        }
         return false;
     }
 
@@ -176,31 +193,34 @@ public class Game {
         component.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
-                boolean isValidMove = false;
                 switch(keyCode) {
                     case KeyEvent.VK_UP:
                     case KeyEvent.VK_W:
                         //Try to move up
                         isValidMove = detectValidMove(player, 0, -1);
-                        displayText("up " + isValidMove);
+//                        displayText("up " + isValidMove);
+                        direction = "up";
                         updateDisplay();
                         break;
                     case KeyEvent.VK_DOWN:
                         //Try to move down
                         isValidMove = detectValidMove(player, 0, 1);
-                        displayText("down " + isValidMove);
+//                        displayText("down " + isValidMove);
+                        direction = "down";
                         updateDisplay();
                         break;
                     case KeyEvent.VK_LEFT:
                         //Try to move left
                         isValidMove = detectValidMove(player, -1, 0);
-                        displayText("left " + isValidMove);
+//                        displayText("left " + isValidMove);
+                        direction = "left";
                         updateDisplay();
                         break;
                     case KeyEvent.VK_RIGHT:
                         //Try to move right
                         isValidMove = detectValidMove(player, 1, 0);
-                        displayText("right " + isValidMove);
+//                        displayText("right " + isValidMove);
+                        direction = "right";
                         updateDisplay();
                         break;
 //                    case KeyEvent.VK_S:
