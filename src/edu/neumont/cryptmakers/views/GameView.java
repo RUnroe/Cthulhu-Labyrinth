@@ -367,7 +367,7 @@ public class GameView {
     }
         public static void createEndWindow() {
             frame.getContentPane().removeAll();
-    //        frame.getContentPane().add(getTextDisplay());
+            //        frame.getContentPane().add(getTextDisplay());
             Container c = new JPanel();
             c.add(new JLabel(new ImageIcon("images/you-escaped.png")));
             frame.getContentPane().add(c);
