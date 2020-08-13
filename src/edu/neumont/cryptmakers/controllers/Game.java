@@ -138,6 +138,7 @@ public class Game {
         if (isInsideMaze) {
             Tile tile = getMaze().getMaze()[y][x];
             TileEnum tileType = tile.getType();
+            monster.setAwake(true);
             if (character instanceof Player) {
 
                 tile.discover();
