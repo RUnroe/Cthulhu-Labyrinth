@@ -365,4 +365,17 @@ public class GameView {
             return promptForInt(menuString, min, max);
         }
     }
+        public static void createEndWindow() {
+            frame.getContentPane().removeAll();
+    //        frame.getContentPane().add(getTextDisplay());
+            Container c = new JPanel();
+            c.add(new JLabel(new ImageIcon("images/you-escaped.png")));
+            frame.getContentPane().add(c);
+
+            frame.revalidate();
+            frame.repaint();
+    }
+
+
+
 }

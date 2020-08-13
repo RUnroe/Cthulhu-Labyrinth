@@ -5,6 +5,7 @@ import edu.neumont.cryptmakers.views.GameView;
 
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
@@ -137,7 +138,6 @@ public class Game {
         if (isInsideMaze) {
             Tile tile = getMaze().getMaze()[y][x];
             TileEnum tileType = tile.getType();
-            monster.setAwake(true);
             if (character instanceof Player) {
 
                 tile.discover();
@@ -159,12 +159,14 @@ public class Game {
                         }
                         return true;
                     } else{
-                            if (monster.isAwake()) {
-                                displayText("It's a draw, next time get the treasure to win!");
-                                if (player.hasTreasure()) {
-                                    displayText("You win, well done!");
+                            if (monster.isAwake() && player.hasTreasure()) {
+                                displayText("You win, well done!");
                                 }
-                            }
+                                if (monster.isAwake() && !player.hasTreasure()) {
+                                    displayText("It's a draw, next time get the treasure to win!");
+                                    GameView.createEndWindow();
+                                }
+
                     }
                 } else {
                     incrementTurn();
