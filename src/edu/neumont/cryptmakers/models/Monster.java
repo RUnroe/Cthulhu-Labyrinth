@@ -2,7 +2,7 @@ package edu.neumont.cryptmakers.models;
 
 public class Monster extends GameCharacter{
     boolean isAwake = false;
-
+    private TileEnum previousTile;
     public boolean isAwake() {
         return isAwake;
     }
@@ -36,13 +36,18 @@ public class Monster extends GameCharacter{
     }
     public int distanceFromPlayer(int playerHPos, int playerVPos) {
         int[] offset = offsetFromPlayer(playerHPos, playerVPos);
-        int minOffset = offset[0], maxOffset = offset[1];
+        int maxOffset = offset[1];
         if(offset[0] > offset[1]) {
-            minOffset = offset[1];
             maxOffset = offset[0];
         }
+        return Math.abs(maxOffset);
 
-        return (minOffset + (maxOffset-minOffset));
+    }
 
+    public TileEnum getPreviousTile() {
+        return this.previousTile;
+    }
+    public void setPreviousTile(TileEnum tile) {
+        this.previousTile = tile;
     }
 }

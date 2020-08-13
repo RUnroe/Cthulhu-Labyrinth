@@ -11,8 +11,7 @@ import java.io.LineNumberReader;
 import java.util.Random;
 
 import static edu.neumont.cryptmakers.views.GameView.displayText;
-
-
+import static edu.neumont.cryptmakers.views.GameView.getFrame;
 
 
 public class Game {
@@ -91,6 +90,7 @@ public class Game {
         //TODO: This will be the main controller to control the game
         mazeSizePrompt();
         monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
+        monster.setPreviousTile(maze.getMaze()[monster.getVPos()][monster.getHPos()].getType());
         view = new GameView();
         updateText("There is a wall");
         for (int vPos = 0; vPos < maze.getXSize(); vPos++)
@@ -104,6 +104,10 @@ public class Game {
                         player.setVPos(vPos);
                     case START:
                         t.discover();
+                        break;
+                    case ENEMY:
+                        monster.setHPos(hPos);
+                        monster.setVPos(vPos);
                 }
             }
         }
@@ -193,8 +197,10 @@ public class Game {
                 }
             } else if (character instanceof Monster) {
                 if (((Monster) character).isAwake()) {
-                    maze.getMaze()[character.getVPos()][character.getHPos()] = monsterTile;
+                    maze.getMaze()[character.getVPos()][character.getHPos()].setType(((Monster) character).getPreviousTile());
+                    System.out.println(monster.getPreviousTile());
                     monsterTile = tile;
+                    if(tile.getType() != TileEnum.ENEMY) ((Monster) character).setPreviousTile(tile.getType());
                     character.move(hTrans, vTrans);
                     tile.setType(TileEnum.ENEMY);
                     return true;
@@ -273,9 +279,33 @@ public class Game {
     private void incrementTurn() {
         turnCount++;
         moveCount = 1;
+        monsterController();
+        updateDisplay();
+    }
+
+
+    private void monsterController() {
+        monster.wakeUp(); //TODO testing purposes
         int[] translation = monster.getNextMove(player.getHPos(), player.getVPos());
         detectValidMove(monster, translation[0], translation[1]);
-        updateDisplay();
+        //System.out.println(monster.distanceFromPlayer(player.getHPos(), player.getVPos()));
+        System.out.println(monster.distanceFromPlayer(player.getHPos(), player.getVPos()));
+        switch(monster.distanceFromPlayer(player.getHPos(), player.getVPos())) {
+            case 0:
+                endGame();
+                break;
+            case 1:
+                monster.wakeUp();
+                break;
+            case 2:
+                //Alert player that monster is close
+                break;
+        }
+    }
+
+    private void endGame() {
+
+        getFrame().dispose();
     }
 
 }
