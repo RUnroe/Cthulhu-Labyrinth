@@ -220,25 +220,21 @@ public class Game {
                     case KeyEvent.VK_W:
                         //Try to move up
                         isValidMove = detectValidMove(player, 0, -1);
-                        displayText("up " + isValidMove);
                         updateDisplay();
                         break;
                     case KeyEvent.VK_DOWN:
                         //Try to move down
                         isValidMove = detectValidMove(player, 0, 1);
-                        displayText("down " + isValidMove);
                         updateDisplay();
                         break;
                     case KeyEvent.VK_LEFT:
                         //Try to move left
                         isValidMove = detectValidMove(player, -1, 0);
-                        displayText("left " + isValidMove);
                         updateDisplay();
                         break;
                     case KeyEvent.VK_RIGHT:
                         //Try to move right
                         isValidMove = detectValidMove(player, 1, 0);
-                        displayText("right " + isValidMove);
                         updateDisplay();
                         break;
                     case KeyEvent.VK_S:
@@ -285,7 +281,7 @@ public class Game {
 
 
     private void monsterController() {
-        monster.wakeUp(); //TODO testing purposes
+        //monster.wakeUp(); //TODO testing purposes
         int[] translation = monster.getNextMove(player.getHPos(), player.getVPos());
         detectValidMove(monster, translation[0], translation[1]);
         //System.out.println(monster.distanceFromPlayer(player.getHPos(), player.getVPos()));
@@ -295,17 +291,20 @@ public class Game {
                 endGame();
                 break;
             case 1:
+                displayText("The monster is awake!");
                 monster.wakeUp();
                 break;
             case 2:
                 //Alert player that monster is close
+                if(monster.isAwake())displayText("The monster is near");
+                else displayText("You hear the monster stirring!");
                 break;
         }
     }
 
     private void endGame() {
-
-        getFrame().dispose();
+        displayText("Get ganked");
+        //getFrame().dispose();
     }
 
 }
