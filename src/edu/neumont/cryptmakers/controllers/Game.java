@@ -183,15 +183,32 @@ public class Game {
 
                 tile.discover();
                 if (tileType != TileEnum.WALL) {
-                    maze.getMaze()[player.getVPos()][player.getHPos()].setType(TileEnum.PATH);
-                    character.move(hTrans, vTrans);
-                    tile.setType(TileEnum.PLAYER);
-                    if (moveCount >= turnSpeed) {
-                        incrementTurn();
-                    } else {
-                        moveCount++;
+                    if(tileType != TileEnum.START) {
+                        maze.getMaze()[player.getVPos()][player.getHPos()].setType(TileEnum.PATH);
+                        character.move(hTrans, vTrans);
+                        tile.setType(TileEnum.PLAYER);
+                        if (tileType == TileEnum.TREASURE) {
+                            player.setTreasure(true);
+                            //Change speed
+                            turnSpeed = 1;
+                            updateDisplay();
+                        }
+                        if (moveCount >= turnSpeed) {
+                            incrementTurn();
+                        } else {
+                            moveCount++;
+                        }
+                        return true;
+                    } else{
+                        if (monster.isAwake() && player.hasTreasure()) {
+                            displayText("You win, well done!");
+                        }
+                        if (monster.isAwake() && !player.hasTreasure()) {
+                            displayText("It's a draw, next time get the treasure to win!");
+                            GameView.createEndWindow();
+                        }
+
                     }
-                    return true;
                 } else {
                     incrementTurn();
                 }
