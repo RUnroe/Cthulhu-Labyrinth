@@ -112,16 +112,6 @@ public class GameView {
         ScoreDisplay = scoreDisplay;
     }
 
-    public static void createEndWindow() {
-        frame.getContentPane().removeAll();
-//        frame.getContentPane().add(getTextDisplay());
-        Container c = new JPanel();
-        c.add(new JLabel(new ImageIcon("images/you-escaped.png")));
-        frame.getContentPane().add(c);
-
-        frame.revalidate();
-        frame.repaint();
-    }
 
     public void setupFrameView() {
         frame.setLayout(new BorderLayout());
@@ -376,11 +366,11 @@ public class GameView {
             return promptForInt(menuString, min, max);
         }
     }
-        public static void createEndWindow() {
+        public static void createEndWindow(String fileName) {
             frame.getContentPane().removeAll();
             //        frame.getContentPane().add(getTextDisplay());
             Container c = new JPanel();
-            c.add(new JLabel(new ImageIcon("images/you-escaped.png")));
+            c.add(new JLabel(new ImageIcon(fileName)));
             frame.getContentPane().add(c);
 
             frame.revalidate();

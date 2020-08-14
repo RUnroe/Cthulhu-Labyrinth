@@ -24,7 +24,7 @@ public class Game {
     private static int mazeSize; //TODO: Randomize a maze size within the params listed in the spec
 
 
-    private Maze maze = new Maze(mazeSize, mazeSize);
+    private Maze maze;
     public static int turnCount = 0;
     private int turnSpeed = 3;
     private int moveCount = 1;
@@ -34,21 +34,13 @@ public class Game {
     public static boolean isGameRunning = false;
     private boolean hasEscaped = false;
     private boolean isValidMove = false;
-    private String direction = "still";
     Player player = new Player();
     Monster monster = new Monster();
-    Tile monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
+    Tile monsterTile;
 
 
-    private GameView view = new GameView();
+    private GameView view;
 
-    public String getDirection() {
-        return direction;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
 
     public static int getMazeSize() {
         return mazeSize;
@@ -186,7 +178,6 @@ public class Game {
     private void updateDisplay() {
         GameView.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
         view.displayMaze(maze);
-        GameView.displayText((hasEscaped ? "You've escaped!" : direction + isValidMove));
         view.displayTurnCount(turnCount);
     }
     private void updateText(String output) {
@@ -227,10 +218,15 @@ public class Game {
                     } else{
                         if (monster.isAwake() && player.hasTreasure()) {
                             displayText("You win, well done!");
+                            GameView.createEndWindow("images/you-escaped.png"); //TODO
+                            lostMine.stop();
+                            sleepingOgre.stop();
                         }
                         if (monster.isAwake() && !player.hasTreasure()) {
                             displayText("It's a draw, next time get the treasure to win!");
-                            GameView.createEndWindow();
+                            GameView.createEndWindow("images/you-escaped.png");
+                            lostMine.stop();
+                            sleepingOgre.stop();
                         }
 
                     }
@@ -243,7 +239,7 @@ public class Game {
             } else if (character instanceof Monster) {
                 if (((Monster) character).isAwake()) {
                     maze.getMaze()[character.getVPos()][character.getHPos()].setType(((Monster) character).getPreviousTile());
-                    System.out.println(monster.getPreviousTile());
+                    //System.out.println(monster.getPreviousTile());
                     monsterTile = tile;
                     if(tile.getType() != TileEnum.ENEMY) ((Monster) character).setPreviousTile(tile.getType());
                     character.move(hTrans, vTrans);
@@ -252,13 +248,7 @@ public class Game {
                 }
             }
         }
-        if (hasEscaped) {
-            isGameRunning = false;
-            updateDisplay();
-            GameView.createEndWindow();
-            lostMine.stop();
-            sleepingOgre.stop();
-        }
+
         return false;
     }
 
@@ -273,21 +263,25 @@ public class Game {
                     case KeyEvent.VK_W:
                         //Try to move up
                         isValidMove = detectValidMove(player, 0, -1);
+                        monsterController();
                         updateDisplay();
                         break;
                     case KeyEvent.VK_DOWN:
                         //Try to move down
                         isValidMove = detectValidMove(player, 0, 1);
+                        monsterController();
                         updateDisplay();
                         break;
                     case KeyEvent.VK_LEFT:
                         //Try to move left
                         isValidMove = detectValidMove(player, -1, 0);
+                        monsterController();
                         updateDisplay();
                         break;
                     case KeyEvent.VK_RIGHT:
                         //Try to move right
                         isValidMove = detectValidMove(player, 1, 0);
+                        monsterController();
                         updateDisplay();
                         break;
 //                    case KeyEvent.VK_S:
@@ -328,7 +322,6 @@ public class Game {
     private void incrementTurn() {
         turnCount++;
         moveCount = 1;
-        monsterController();
         updateDisplay();
     }
 
@@ -363,7 +356,7 @@ public class Game {
     }
     private void loseGame() {
         displayText("The monster ate you! You lose!");
-        //TODO Lose screen
+        GameView.createEndWindow("images/you-escaped.png"); //TODO
     }
 
 }

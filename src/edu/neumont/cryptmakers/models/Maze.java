@@ -117,6 +117,7 @@ public class Maze {
                 totalTiles.add(maze[x][y]);
             }
         }
+        System.out.println(totalTiles.size());
         //stores the carved tiles
         ArrayList<Tile> tree = new ArrayList<Tile>();
         //stores the neighbors of the current tile
