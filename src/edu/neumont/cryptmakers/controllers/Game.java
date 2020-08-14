@@ -23,18 +23,32 @@ public class Game {
     //private int mazeSize = random.nextInt(13) + 8;
     private static int mazeSize; //TODO: Randomize a maze size within the params listed in the spec
 
-    private Maze maze;
-    private int turnCount = 0;
+
+    private Maze maze = new Maze(mazeSize, mazeSize);
+    public static int turnCount = 0;
     private int turnSpeed = 3;
     private int moveCount = 1;
     private static boolean mapShown = false;
     private static boolean is64x = false;
     private boolean gameOver = false;
+    public static boolean isGameRunning = false;
+    private boolean hasEscaped = false;
+    private boolean isValidMove = false;
+    private String direction = "still";
     Player player = new Player();
     Monster monster = new Monster();
-    Tile monsterTile;
+    Tile monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
 
-    private GameView view ;
+
+    private GameView view = new GameView();
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
 
     public static int getMazeSize() {
         return mazeSize;
@@ -86,12 +100,20 @@ public class Game {
 
 
 
+    AudioTrack lostMine = new AudioTrack("music/98_Lost_Mine.wav");
+    AudioTrack sleepingOgre = new AudioTrack("music/186_Haunted.wav");
+    AudioTrack treasurePickup = new AudioTrack("music/treasure_found.wav");
+
     public void run() {
         //TODO: This will be the main controller to control the game
         mazeSizePrompt();
         monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
         monster.setPreviousTile(maze.getMaze()[monster.getVPos()][monster.getHPos()].getType());
         view = new GameView();
+
+        isGameRunning = true;
+        lostMine.play();
+        sleepingOgre.play();
 
         for (int vPos = 0; vPos < maze.getXSize(); vPos++)
         {
@@ -164,6 +186,7 @@ public class Game {
     private void updateDisplay() {
         GameView.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
         view.displayMaze(maze);
+        GameView.displayText((hasEscaped ? "You've escaped!" : direction + isValidMove));
         view.displayTurnCount(turnCount);
     }
     private void updateText(String output) {
@@ -189,6 +212,7 @@ public class Game {
                         tile.setType(TileEnum.PLAYER);
                         if (tileType == TileEnum.TREASURE) {
                             player.setTreasure(true);
+                            treasurePickup.play();
                             //Change speed
                             wakeMonsterOnDelay(2);
                             turnSpeed = 1;
@@ -213,6 +237,9 @@ public class Game {
                 } else {
                     incrementTurn();
                 }
+                if (tileType == TileEnum.START) {
+                    hasEscaped = true;
+                }
             } else if (character instanceof Monster) {
                 if (((Monster) character).isAwake()) {
                     maze.getMaze()[character.getVPos()][character.getHPos()].setType(((Monster) character).getPreviousTile());
@@ -224,6 +251,13 @@ public class Game {
                     return true;
                 }
             }
+        }
+        if (hasEscaped) {
+            isGameRunning = false;
+            updateDisplay();
+            GameView.createEndWindow();
+            lostMine.stop();
+            sleepingOgre.stop();
         }
         return false;
     }
@@ -256,18 +290,18 @@ public class Game {
                         isValidMove = detectValidMove(player, 1, 0);
                         updateDisplay();
                         break;
-                    case KeyEvent.VK_S:
-                        //Change speed
-                        if (moveCount > 1) {
-                            incrementTurn();
-                        }
-                        if (turnSpeed == 1) {
-                            turnSpeed = 3;
-                        } else {
-                            turnSpeed = 1;
-                        }
-                        updateDisplay();
-                        break;
+//                    case KeyEvent.VK_S:
+//                        //Change speed
+//                        if (moveCount > 1) {
+//                            incrementTurn();
+//                        }
+//                        if (turnSpeed == 1) {
+//                            turnSpeed = 3;
+//                        } else {
+//                            turnSpeed = 1;
+//                        }
+//                        updateDisplay();
+//                        break;
                     case KeyEvent.VK_M:
 //                        for (Tile[] t : maze.getMaze()) {
 //                            if (!mapShown) {

@@ -112,6 +112,17 @@ public class GameView {
         ScoreDisplay = scoreDisplay;
     }
 
+    public static void createEndWindow() {
+        frame.getContentPane().removeAll();
+//        frame.getContentPane().add(getTextDisplay());
+        Container c = new JPanel();
+        c.add(new JLabel(new ImageIcon("images/you-escaped.png")));
+        frame.getContentPane().add(c);
+
+        frame.revalidate();
+        frame.repaint();
+    }
+
     public void setupFrameView() {
         frame.setLayout(new BorderLayout());
         frame.setMinimumSize(new Dimension(JFrameWidth, JFrameHeight));
