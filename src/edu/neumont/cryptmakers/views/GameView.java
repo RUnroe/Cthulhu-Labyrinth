@@ -24,6 +24,7 @@ public class GameView {
     private static JTextPane TextDisplay = new JTextPane();
     private static JTextPane MazeDisplay = new JTextPane();
     private static JTextPane ScoreDisplay = new JTextPane();
+    private static JTextPane TreasureDisplay = new JTextPane();
     private static JTextPane SpeedDisplay = new JTextPane();
     private static JLabel[][] imageLabels;
     public static final ImageIcon[] playerSprites = new ImageIcon[5];
@@ -54,6 +55,14 @@ public class GameView {
 
     public static void setSpeedDisplay(JTextPane speedDisplay) {
         SpeedDisplay = speedDisplay;
+    }
+
+    public static JTextPane getTreasureDisplay() {
+        return TreasureDisplay;
+    }
+
+    public static void setTreasureDisplay(JTextPane treasureDisplay) {
+        TreasureDisplay = TreasureDisplay;
     }
 
     public static JPanel getMapContainer() {
@@ -133,7 +142,8 @@ public class GameView {
 //        setupJTextPaneComponent(MazeDisplay, BorderLayout.NORTH, 350);
         setupJTextPaneComponent(ScoreDisplay, BorderLayout.CENTER, 30);
         setupJTextPaneComponent(TextDisplay, BorderLayout.CENTER, 30);
-        setupJTextPaneComponent(SpeedDisplay, BorderLayout.CENTER, 300);
+        setupJTextPaneComponent(TreasureDisplay, BorderLayout.CENTER, 200);
+    setupJTextPaneComponent(SpeedDisplay, BorderLayout.CENTER, 300);
 
         frame.add(clickContainer);
 //        frame.add(mapContainer);
