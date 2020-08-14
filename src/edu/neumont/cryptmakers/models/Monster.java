@@ -3,6 +3,7 @@ package edu.neumont.cryptmakers.models;
 public class Monster extends GameCharacter{
     boolean isAwake = false;
     private TileEnum previousTile;
+    private int wakeTurn = -1;
     public boolean isAwake() {
         return isAwake;
     }
@@ -36,11 +37,14 @@ public class Monster extends GameCharacter{
     }
     public int distanceFromPlayer(int playerHPos, int playerVPos) {
         int[] offset = offsetFromPlayer(playerHPos, playerVPos);
+        offset[0] = Math.abs(offset[0]);
+        offset[1] = Math.abs(offset[1]);
+
         int maxOffset = offset[1];
         if(offset[0] > offset[1]) {
             maxOffset = offset[0];
         }
-        return Math.abs(maxOffset);
+        return maxOffset;
 
     }
 
@@ -50,4 +54,11 @@ public class Monster extends GameCharacter{
     public void setPreviousTile(TileEnum tile) {
         this.previousTile = tile;
     }
+    public boolean tryToWake(int turnCount) {
+        return turnCount == this.wakeTurn;
+    }
+    public void setWakeTurn(int wakeTurn) {
+        this.wakeTurn = wakeTurn;
+    }
+
 }
