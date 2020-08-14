@@ -23,7 +23,6 @@ public class Game {
     //private int mazeSize = random.nextInt(13) + 8;
     private static int mazeSize; //TODO: Randomize a maze size within the params listed in the spec
 
-
     private Maze maze;
     public static int turnCount = 0;
     private int turnSpeed = 3;
@@ -40,7 +39,6 @@ public class Game {
 
 
     private GameView view;
-
 
     public static int getMazeSize() {
         return mazeSize;
@@ -248,7 +246,6 @@ public class Game {
                 }
             }
         }
-
         return false;
     }
 
