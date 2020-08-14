@@ -25,7 +25,7 @@ public class Game {
 
     private Maze maze;
     private int turnCount = 0;
-    private int turnSpeed = 1;
+    private int turnSpeed = 3;
     private int moveCount = 1;
     private static boolean mapShown = false;
     private static boolean is64x = false;
@@ -92,7 +92,7 @@ public class Game {
         monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
         monster.setPreviousTile(maze.getMaze()[monster.getVPos()][monster.getHPos()].getType());
         view = new GameView();
-        updateText("There is a wall");
+
         for (int vPos = 0; vPos < maze.getXSize(); vPos++)
         {
             for (int hPos = 0; hPos < maze.getYSize(); hPos++)
@@ -190,6 +190,7 @@ public class Game {
                         if (tileType == TileEnum.TREASURE) {
                             player.setTreasure(true);
                             //Change speed
+                            wakeMonsterOnDelay(2);
                             turnSpeed = 1;
                             updateDisplay();
                         }
@@ -230,6 +231,7 @@ public class Game {
     public void setupKeyPressEventListener(JComponent component) {
         component.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
+                updateText("");
                 int keyCode = e.getKeyCode();
                 boolean isValidMove = false;
                 switch(keyCode) {
@@ -298,18 +300,15 @@ public class Game {
 
 
     private void monsterController() {
-        //monster.wakeUp(); //TODO testing purposes
         int[] translation = monster.getNextMove(player.getHPos(), player.getVPos());
         detectValidMove(monster, translation[0], translation[1]);
-        //System.out.println(monster.distanceFromPlayer(player.getHPos(), player.getVPos()));
-        System.out.println(monster.distanceFromPlayer(player.getHPos(), player.getVPos()));
+        if(monster.tryToWake(turnCount)) wakeMonster();
         switch(monster.distanceFromPlayer(player.getHPos(), player.getVPos())) {
             case 0:
-                endGame();
+                loseGame();
                 break;
             case 1:
-                displayText("The monster is awake!");
-                monster.wakeUp();
+                wakeMonster();
                 break;
             case 2:
                 //Alert player that monster is close
@@ -318,10 +317,19 @@ public class Game {
                 break;
         }
     }
+    private void wakeMonster() {
+        if(!monster.isAwake()) {
+            displayText("The monster is awake!");
+            monster.wakeUp();
+        }
+    }
 
-    private void endGame() {
-        displayText("Get ganked");
-        //getFrame().dispose();
+    private void wakeMonsterOnDelay(int turnDelay) {
+        monster.setWakeTurn(turnCount + turnDelay);
+    }
+    private void loseGame() {
+        displayText("The monster ate you! You lose!");
+        //TODO Lose screen
     }
 
 }
