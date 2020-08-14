@@ -321,14 +321,13 @@ public class Game {
     private void incrementTurn() {
         turnCount++;
         moveCount = 1;
+        moveMonster();
         updateDisplay();
     }
 
 
     private void monsterController() {
-        int[] translation = monster.getNextMove(player.getHPos(), player.getVPos());
-        detectValidMove(monster, translation[0], translation[1]);
-        if(monster.tryToWake(turnCount)) wakeMonster();
+
         switch(monster.distanceFromPlayer(player.getHPos(), player.getVPos())) {
             case 0:
                 loseGame();
@@ -342,6 +341,12 @@ public class Game {
                 else displayText("You hear the monster stirring!");
                 break;
         }
+    }
+
+    private void moveMonster() {
+        if(monster.tryToWake(turnCount)) wakeMonster();
+        int[] translation = monster.getNextMove(player.getHPos(), player.getVPos());
+        detectValidMove(monster, translation[0], translation[1]);
     }
     private void wakeMonster() {
         if(!monster.isAwake()) {
