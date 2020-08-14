@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Cthulhu-Labyrinth:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Cthulhu_Labyrinth_jar</output-path>
+    <root id="archive" name="Cthulhu-Labyrinth.jar">
+      <element id="module-output" name="Cthulhu-Labyrinth" />
+    </root>
+  </artifact>
+</component>

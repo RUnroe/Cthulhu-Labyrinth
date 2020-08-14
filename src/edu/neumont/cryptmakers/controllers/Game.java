@@ -218,7 +218,7 @@ public class Game {
                     } else{
                         if (monster.isAwake() && player.hasTreasure()) {
                             displayText("You win, well done!");
-                            GameView.createEndWindow("images/you-escaped.png"); //TODO
+                            GameView.createEndWindow("images/winner.png"); //TODO
                             lostMine.stop();
                             sleepingOgre.stop();
                         }
@@ -360,7 +360,7 @@ public class Game {
     }
     private void loseGame() {
         displayText("The monster ate you! You lose!");
-        GameView.createEndWindow("images/you-escaped.png"); //TODO
+        GameView.createEndWindow("images/youaredead.png"); //TODO
     }
 
 }
