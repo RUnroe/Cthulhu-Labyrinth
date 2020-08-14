@@ -175,6 +175,8 @@ public class Game {
 
     private void updateDisplay() {
         GameView.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
+        GameView.getTreasureDisplay().setText("Has Treasure: " + player.hasTreasure());
+
         view.displayMaze(maze);
         view.displayTurnCount(turnCount);
     }
