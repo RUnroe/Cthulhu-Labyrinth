@@ -22,18 +22,20 @@ public class Game {
     private static int mazeSize = 16; //TODO: Randomize a maze size within the params listed in the spec
 
     private Maze maze = new Maze(mazeSize, mazeSize);
-    private int turnCount = 0;
+    public static int turnCount = 0;
     private int turnSpeed = 3;
     private int moveCount = 1;
     private static boolean mapShown = false;
     private static boolean is64x = false;
     private boolean gameOver = false;
+    public static boolean isGameRunning = false;
     private boolean hasEscaped = false;
     private boolean isValidMove = false;
     private String direction = "still";
     Player player = new Player();
     Monster monster = new Monster();
     Tile monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
+
 
     private GameView view = new GameView();
 
@@ -95,10 +97,16 @@ public class Game {
 
 
 
+    AudioTrack lostMine = new AudioTrack("music/98_Lost_Mine.wav");
+    AudioTrack sleepingOgre = new AudioTrack("music/186_Haunted.wav");
+    AudioTrack treasurePickup = new AudioTrack("music/treasure_found.wav");
+
     public void run() {
         //TODO: This will be the main controller to control the game
-
+        isGameRunning = true;
         updateText("There is a wall");
+        lostMine.play();
+        sleepingOgre.play();
         for (int vPos = 0; vPos < maze.getXSize(); vPos++)
         {
             for (int hPos = 0; hPos < maze.getYSize(); hPos++)
@@ -119,7 +127,6 @@ public class Game {
 //        setupKeyPressEventListener(GameView.getTextDisplay());
 //        setupKeyPressEventListener(GameView.getMazeDisplay());
 //        setupKeyPressEventListener(GameView.getScoreDisplay());
-
 
     }
 
@@ -156,6 +163,7 @@ public class Game {
                     tile.setType(TileEnum.PLAYER);
                     if(tileType == TileEnum.TREASURE){
                         ((Player) character).setTreasure(true);
+                        treasurePickup.play();
                         //Change speed
                         turnSpeed = 1;
                         updateDisplay();
@@ -183,8 +191,11 @@ public class Game {
             }
         }
         if (hasEscaped) {
+            isGameRunning = false;
             updateDisplay();
             GameView.createEndWindow();
+            lostMine.stop();
+            sleepingOgre.stop();
         }
         return false;
     }
