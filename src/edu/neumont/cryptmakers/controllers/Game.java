@@ -19,9 +19,8 @@ public class Game {
     private int score = 0;
 
 
-    private Random random = new Random();
-    //private int mazeSize = random.nextInt(13) + 8;
-    private static int mazeSize; //TODO: Randomize a maze size within the params listed in the spec
+
+    private static int mazeSize;
 
     private Maze maze;
     public static int turnCount = 0;

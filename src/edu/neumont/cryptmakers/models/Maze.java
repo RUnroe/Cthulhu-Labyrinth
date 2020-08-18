@@ -27,9 +27,10 @@ public class Maze {
     public void generateMaze() {
         initializeMaze();
         growingTree();
-        placeMonster();
         placeStart();
         placeTreasure();
+        placeMonster();
+
         System.out.println("Maze generated");
     }
 
@@ -107,6 +108,8 @@ public class Maze {
         for (Tile neighbor : neighbors) {
             if (neighbor.getType() == TileEnum.PATH) {
                 maze[neighbor.getX()][neighbor.getY()].setType(TileEnum.PLAYER);
+                playerX = neighbor.getX();
+                playerY = neighbor.getY();
                 return;
             }
         }
@@ -121,7 +124,7 @@ public class Maze {
                 totalTiles.add(maze[x][y]);
             }
         }
-        System.out.println(totalTiles.size());
+        //System.out.println(totalTiles.size());
         //stores the carved tiles
         ArrayList<Tile> tree = new ArrayList<Tile>();
         //stores the neighbors of the current tile
@@ -188,6 +191,18 @@ public class Maze {
                     tree.remove(currentTile);
             }
         }
+        int wallCount = 0;
+        for(int i = 0; i < maze.length; i++){
+            for(int j = 0; j < maze.length; j++){
+
+                if(maze[i][j].getType() == TileEnum.WALL)
+                    wallCount++;
+
+            }
+        }
+
+        if(wallCount > (xSize * ySize)/1.5)
+            growingTree();
     }
 
     public void initializeMaze() {
@@ -240,13 +255,13 @@ public class Maze {
         boolean accessible = false;
 
         ArrayList<Tile> firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
-        while (maze[x][y].getType() != TileEnum.WALL || !accessible) {
+        while (maze[x][y].getType() != TileEnum.PATH || !accessible) {
             accessible = false;
             x = random.nextInt(getXSize());
             y = random.nextInt(getYSize());
             firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
 
-            System.out.println(firstNeighbors.size());
+            //System.out.println(firstNeighbors.size());
 
             for (int neighbor = 0; neighbor < firstNeighbors.size(); neighbor++) {
                 if (maze[x][y].getType() == TileEnum.PATH && firstNeighbors.get(neighbor).getType() == TileEnum.PATH) {
@@ -257,31 +272,31 @@ public class Maze {
 
             }
 
-            if (accesible == true) {
+            if (accesible) {
                 break;
             }
 
         } //end while loop
 
-        for(int i = 0; i < maze.length; i++){
-            for(int j = 0; j < maze.length; j++){
-                if(maze[i][j].getType() == TileEnum.PLAYER){
-
-                    playerX = i;
-                    playerY = j;
-
-                }
-            }
-        }
+//        for(int i = 0; i < maze.length; i++){
+//            for(int j = 0; j < maze.length; j++){
+//                if(maze[i][j].getType() == TileEnum.PLAYER){
+//
+//                    playerX = i;
+//                    playerY = j;
+//
+//                }
+//            }
+//        }
 
         System.out.println("Method check");
         int distance = distanceFromTile(x,y,playerX, playerY);
         System.out.println("distance from player: " + distance);
 
-        if(distance <= 2 || x == 0 || y == 0 || x == maze.length || y == maze.length) {
-
+        if(distance <= 2 || x == 0 || y == 0 || x == maze.length-1 || y == maze.length-1) {
             placeTreasure();
-        } else{
+        }
+        else{
             maze[x][y].setType(TileEnum.TREASURE);
             treasureY = y;
             treasureX = x;
@@ -297,7 +312,7 @@ public class Maze {
         boolean accessible = false;
         ArrayList<Tile> firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
 
-        while (maze[x][y].getType() != TileEnum.WALL || accessible == false) {
+        while (maze[x][y].getType() != TileEnum.WALL || !accessible) {
             accessible = false;
             x = random.nextInt(getXSize());
             y = random.nextInt(getYSize());
@@ -311,21 +326,21 @@ public class Maze {
 
                 }
             }
-            if (accesible == true)
+            if (accesible)
                 break;
         }
-        for(int i = 0; i < maze.length; i++){
-            for(int j = 0; j < maze.length; j++){
-                if(maze[i][j].getType() == TileEnum.PLAYER){
 
-                    playerX = i;
-                    playerY = j;
+//        for(int i = 0; i < maze.length; i++){
+//            for(int j = 0; j < maze.length; j++){
+//                if(maze[i][j].getType() == TileEnum.PLAYER){
+//                    playerX = i;
+//                    playerY = j;
+//
+//                }
+//            }
+//        }
 
-                }
-            }
-        }
-
-        System.out.println("method check");
+        System.out.println("Monster method check");
 
         int playerDistance = distanceFromTile(x,y,playerX, playerY);
         System.out.println("Monster distance from player: " + playerDistance);
