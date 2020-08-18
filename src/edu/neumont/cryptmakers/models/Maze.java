@@ -22,8 +22,6 @@ public class Maze {
         setXSize(xSize);
         setYSize(ySize);
         generateMaze();
-        System.out.println("printing maze...");
-        printMaze();
     }
 
     public void generateMaze() {
