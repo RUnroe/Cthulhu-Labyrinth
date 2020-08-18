@@ -243,7 +243,7 @@ public class Maze {
 
         ArrayList<Tile> firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
        // ArrayList<Tile> secondNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize(), 2);
-        while (maze[x][y].getType() != TileEnum.PATH || accessible == false) {
+        while (maze[x][y].getType() != TileEnum.WALL || accessible == false) {
             accessible = false;
             x = random.nextInt(getXSize());
             y = random.nextInt(getYSize());
@@ -280,11 +280,13 @@ public class Maze {
 
         int distance = distanceFromTile(x,y,playerX, playerY);
 
-        if(distance <= 2 || x==0 || y==0 || x== maze.length || y == maze.length) {
+        if(distance <= 2 || x == 0 || y == 0 || x == maze.length || y == maze.length) {
 
             placeTreasure();
         } else{
             maze[x][y].setType(TileEnum.TREASURE);
+            treasureY = y;
+            treasureX = x;
         }
     }
 
