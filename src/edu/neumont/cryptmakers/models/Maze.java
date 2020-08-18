@@ -8,6 +8,12 @@ public class Maze {
     private int xSize;
     private int ySize;
 
+    private int playerX;
+    private int playerY;
+
+    private int treasureX;
+    private int treasureY;
+
     private Tile[][] maze;
     private boolean accesible;
 
@@ -260,8 +266,26 @@ public class Maze {
             }
 
         } //end while loop
-        maze[x][y].setType(TileEnum.TREASURE);
-        printMaze();
+
+        for(int i = 0; i < maze.length; i++){
+            for(int j = 0; j < maze.length; j++){
+                if(maze[i][j].getType() == TileEnum.PLAYER){
+
+                    playerX = i;
+                    playerY = j;
+
+                }
+            }
+        }
+
+        int distance = distanceFromTile(x,y,playerX, playerY);
+
+        if(distance <= 2 || x==0 || y==0 || x== maze.length || y == maze.length) {
+
+            placeTreasure();
+        } else{
+            maze[x][y].setType(TileEnum.TREASURE);
+        }
     }
 
     public void placeMonster() {
@@ -290,8 +314,27 @@ public class Maze {
             if (accesible == true)
                 break;
         }
-        maze[x][y].setType(TileEnum.ENEMY);
-        printMaze();
+        for(int i = 0; i < maze.length; i++){
+            for(int j = 0; j < maze.length; j++){
+                if(maze[i][j].getType() == TileEnum.PLAYER){
+
+                    playerX = i;
+                    playerY = j;
+
+                }
+            }
+        }
+
+        int playerDistance = distanceFromTile(x,y,playerX, playerY);
+        int treasureDistance = distanceFromTile(x,y,treasureX, treasureY);
+
+        if(playerDistance <= 3 || treasureDistance <= 2) {
+
+            placeMonster();
+
+        } else{
+            maze[x][y].setType(TileEnum.ENEMY);
+        }
     }
 
     public void printMaze() {
@@ -320,6 +363,25 @@ public class Maze {
 
             }
         }
+    }
+
+    private int[] offsetFromTile(int startTileHPos, int startTileVPos, int targetTileHPos, int targetTileVPos) {
+        int verticalOffset = startTileVPos - targetTileVPos; // Positive int means move up; Negative = down
+        int horizontalOffset = startTileHPos - targetTileHPos;// Positive int means move left; Negative = right
+        return new int[]{horizontalOffset, verticalOffset};
+    }
+
+    public int distanceFromTile(int startTileHPos, int startTileVPos, int targetTileHPos, int targetTileVPos) {
+        int[] offset = offsetFromTile(startTileHPos, startTileVPos, targetTileHPos, targetTileVPos);
+        offset[0] = Math.abs(offset[0]);
+        offset[1] = Math.abs(offset[1]);
+
+        int maxOffset = offset[1];
+        if(offset[0] > offset[1]) {
+            maxOffset = offset[0];
+        }
+        return maxOffset;
+
     }
 
     public Tile[][] getMaze() {
