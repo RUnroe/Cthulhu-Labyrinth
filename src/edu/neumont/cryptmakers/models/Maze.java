@@ -240,13 +240,11 @@ public class Maze {
         boolean accessible = false;
 
         ArrayList<Tile> firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
-       // ArrayList<Tile> secondNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize(), 2);
-        while (maze[x][y].getType() != TileEnum.WALL || accessible == false) {
+        while (maze[x][y].getType() != TileEnum.WALL || !accessible) {
             accessible = false;
             x = random.nextInt(getXSize());
             y = random.nextInt(getYSize());
             firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
-            //secondNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize(), 2);
 
             System.out.println(firstNeighbors.size());
 
@@ -276,7 +274,9 @@ public class Maze {
             }
         }
 
+        System.out.println("Method check");
         int distance = distanceFromTile(x,y,playerX, playerY);
+        System.out.println("distance from player: " + distance);
 
         if(distance <= 2 || x == 0 || y == 0 || x == maze.length || y == maze.length) {
 
@@ -296,13 +296,13 @@ public class Maze {
         int y = random.nextInt(getYSize());
         boolean accessible = false;
         ArrayList<Tile> firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
-        ArrayList<Tile> secondNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize(), 2);
+
         while (maze[x][y].getType() != TileEnum.WALL || accessible == false) {
             accessible = false;
             x = random.nextInt(getXSize());
             y = random.nextInt(getYSize());
             firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
-            secondNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
+
             for (int neighbor = 0; neighbor < firstNeighbors.size(); neighbor++) {
                 if ((maze[x][y].getType() == TileEnum.PATH) && firstNeighbors.get(neighbor).getType() == TileEnum.PATH) {
 
@@ -325,8 +325,12 @@ public class Maze {
             }
         }
 
+        System.out.println("method check");
+
         int playerDistance = distanceFromTile(x,y,playerX, playerY);
+        System.out.println("Monster distance from player: " + playerDistance);
         int treasureDistance = distanceFromTile(x,y,treasureX, treasureY);
+        System.out.println("Monster distance from treasure: " + treasureDistance);
 
         if(playerDistance <= 3 || treasureDistance <= 2) {
 
