@@ -310,23 +310,36 @@ public class Maze {
         int x = random.nextInt(getXSize());
         int y = random.nextInt(getYSize());
         boolean accessible = false;
-        ArrayList<Tile> firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
+//        ArrayList<Tile> firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
+//
+//        while (maze[x][y].getType() != TileEnum.WALL || !accessible) {
+//            accessible = false;
+//            x = random.nextInt(getXSize());
+//            y = random.nextInt(getYSize());
+//            firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
+//
+//            for (int neighbor = 0; neighbor < firstNeighbors.size(); neighbor++) {
+//                if ((maze[x][y].getType() == TileEnum.WALL) && firstNeighbors.get(neighbor).getType() == TileEnum.PATH || ) {
+//
+//                    accesible = true;
+//                    break;
+//
+//                }
+//            }
+//            if (accesible)
+//                break;
+//        }
 
-        while (maze[x][y].getType() != TileEnum.WALL || !accessible) {
-            accessible = false;
-            x = random.nextInt(getXSize());
-            y = random.nextInt(getYSize());
-            firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
-
-            for (int neighbor = 0; neighbor < firstNeighbors.size(); neighbor++) {
-                if ((maze[x][y].getType() == TileEnum.PATH) && firstNeighbors.get(neighbor).getType() == TileEnum.PATH) {
-
-                    accesible = true;
-                    break;
-
-                }
+        while(!accessible){
+            if(maze[x][y].getType() == TileEnum.WALL){
+                accessible = true;
+                break;
+            } else{
+                x = random.nextInt(getXSize());
+                y = random.nextInt(getYSize());
             }
-            if (accesible)
+
+            if(accessible)
                 break;
         }
 
