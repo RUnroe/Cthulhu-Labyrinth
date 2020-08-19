@@ -32,6 +32,7 @@ public class Game {
     public static boolean isGameRunning = false;
     private boolean hasEscaped = false;
     private boolean isValidMove = false;
+    private boolean m = true;
     Player player = new Player();
     Monster monster = new Monster();
     Tile monsterTile;
@@ -101,8 +102,8 @@ public class Game {
         view = new GameView();
         set64x(true);
         isGameRunning = true;
-        lostMine.play();
-        sleepingOgre.play();
+            lostMine.play();
+            sleepingOgre.play();
 
         for (int vPos = 0; vPos < maze.getXSize(); vPos++)
         {
@@ -298,6 +299,18 @@ public class Game {
 //                        updateDisplay();
 //                        break;
                     case KeyEvent.VK_M:
+                        if (m){
+                            m = false;
+                            lostMine.pause();
+                            sleepingOgre.pause();
+                        } else if (!m){
+                            m = true;
+                            lostMine.resume();
+                            sleepingOgre.resume();
+                        }
+
+
+                        break;
 //                        for (Tile[] t : maze.getMaze()) {
 //                            if (!mapShown) {
 //                                for (Tile tile : t) {
@@ -311,7 +324,7 @@ public class Game {
 //                        }
                             /*setMapShown(!mapShown);
                             updateDisplay();*/
-                            break;
+
                     case KeyEvent.VK_R:
                         /*set64x(!is64x());
                         updateDisplay();*/
