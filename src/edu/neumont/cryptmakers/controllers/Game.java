@@ -99,7 +99,7 @@ public class Game {
         monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
         monster.setPreviousTile(maze.getMaze()[monster.getVPos()][monster.getHPos()].getType());
         view = new GameView();
-
+        set64x(true);
         isGameRunning = true;
         lostMine.play();
         sleepingOgre.play();
@@ -306,12 +306,12 @@ public class Game {
 //                                }
 //                            }
 //                        }
-                            setMapShown(!mapShown);
-                            updateDisplay();
+                            /*setMapShown(!mapShown);
+                            updateDisplay();*/
                             break;
                     case KeyEvent.VK_R:
-                        set64x(!is64x());
-                        updateDisplay();
+                        /*set64x(!is64x());
+                        updateDisplay();*/
                 }
             }
         });
