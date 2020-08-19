@@ -265,18 +265,21 @@ public class Game {
                         updateDisplay();
                         break;
                     case KeyEvent.VK_DOWN:
+                    case KeyEvent.VK_S:
                         //Try to move down
                         isValidMove = detectValidMove(player, 0, 1);
                         monsterController();
                         updateDisplay();
                         break;
                     case KeyEvent.VK_LEFT:
+                    case KeyEvent.VK_A:
                         //Try to move left
                         isValidMove = detectValidMove(player, -1, 0);
                         monsterController();
                         updateDisplay();
                         break;
                     case KeyEvent.VK_RIGHT:
+                    case KeyEvent.VK_D:
                         //Try to move right
                         isValidMove = detectValidMove(player, 1, 0);
                         monsterController();
