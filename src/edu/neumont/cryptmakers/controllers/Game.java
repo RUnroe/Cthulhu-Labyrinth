@@ -225,7 +225,7 @@ public class Game {
                     } else {
                         if (monster.isAwake() && player.hasTreasure()) {
                             displayText("You win, well done!");
-                            GameView.createEndWindow("images/winner.png"); //TODO
+                            GameView.createEndWindow("images/winner.png");
                             changeBGM(retroNoHope);
                         }
                         if (monster.isAwake() && !player.hasTreasure()) {
@@ -244,7 +244,8 @@ public class Game {
             } else if (character instanceof Monster) {
                 if (((Monster) character).isAwake()) {
                     maze.getMaze()[character.getVPos()][character.getHPos()].setType(((Monster) character).getPreviousTile());
-           
+                    //System.out.println(monster.getPreviousTile());
+                    monsterTile = tile;
                     if (tile.getType() != TileEnum.ENEMY) ((Monster) character).setPreviousTile(tile.getType());
                     character.move(hTrans, vTrans);
                     tile.setType(TileEnum.ENEMY);
