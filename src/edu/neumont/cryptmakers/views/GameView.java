@@ -288,6 +288,8 @@ public class GameView {
         }
     }
 
+
+
     public void displayTurnCount(int turnCount) {
         this.ScoreDisplay.setText("Turn count: " + turnCount);
     }
