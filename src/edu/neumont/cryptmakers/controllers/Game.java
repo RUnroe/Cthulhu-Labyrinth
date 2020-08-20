@@ -5,6 +5,7 @@ import edu.neumont.cryptmakers.views.GameView;
 
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.LineNumberReader;
@@ -175,6 +176,7 @@ public class Game {
     private void updateDisplay() {
         GameView.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
         GameView.getTreasureDisplay().setText("Has Treasure: " + player.hasTreasure());
+
 
         view.displayMaze(maze);
         view.displayTurnCount(turnCount);

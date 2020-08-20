@@ -15,7 +15,7 @@ public class Maze {
     private int treasureY;
 
     private Tile[][] maze;
-    private boolean accesible;
+
 
     public Maze(int xSize, int ySize) {
         maze = new Tile[xSize][ySize];
@@ -272,7 +272,7 @@ public class Maze {
 
             }
 
-            if (accesible) {
+            if (accessible) {
                 break;
             }
 
