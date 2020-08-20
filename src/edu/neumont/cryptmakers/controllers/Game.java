@@ -176,8 +176,8 @@ public class Game {
 
     private void updateDisplay() {
         GameView.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
-        GameView.getTreasureDisplay().setText("Has Treasure: " + player.hasTreasure());
-
+        GameView.getTreasureDisplay().setText( player.hasTreasure() ? "You have the treasure! " : "");
+        if(player.hasTreasure()) GameView.getTreasureDisplay().setForeground(Color.MAGENTA);
 
         view.displayMaze(maze);
         view.displayTurnCount(turnCount);
@@ -207,7 +207,7 @@ public class Game {
                             player.setTreasure(true);
                             treasurePickup.play();
                             //Change speed
-                            wakeMonsterOnDelay(2);
+                            wakeMonsterOnDelay(3);
                             turnSpeed = 1;
                             updateDisplay();
                         }

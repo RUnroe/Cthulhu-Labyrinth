@@ -47,6 +47,7 @@ public class GameView {
             playerSprite = playerSprites[pImgNum <= 2 ? 0 : pImgNum <= 4 ? 1 :
                     pImgNum <= 6 ? 2 : pImgNum <= 8 ? 3 : 4 ];
         }
+
     }
 
     public static JTextPane getSpeedDisplay() {
