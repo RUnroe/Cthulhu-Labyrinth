@@ -244,11 +244,7 @@ public class Game {
             } else if (character instanceof Monster) {
                 if (((Monster) character).isAwake()) {
                     maze.getMaze()[character.getVPos()][character.getHPos()].setType(((Monster) character).getPreviousTile());
-                    if(!maze.getMaze()[character.getVPos()][character.getHPos()].isVisible())
-                    maze.getMaze()[character.getVPos()][character.getHPos()].setVisible(false);
-                    //System.out.println(monster.getPreviousTile());
-                    monsterTile = tile;
-                    monsterTile.setVisible(true);
+           
                     if (tile.getType() != TileEnum.ENEMY) ((Monster) character).setPreviousTile(tile.getType());
                     character.move(hTrans, vTrans);
                     tile.setType(TileEnum.ENEMY);
