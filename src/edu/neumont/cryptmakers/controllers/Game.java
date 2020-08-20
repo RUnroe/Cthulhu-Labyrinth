@@ -121,6 +121,9 @@ public class Game {
                     case ENEMY:
                         monster.setHPos(hPos);
                         monster.setVPos(vPos);
+                        if(monster.isAwake()){
+                            t.setVisible(true);
+                        }
                 }
             }
         }
@@ -175,8 +178,8 @@ public class Game {
     }
 
     private void updateDisplay() {
-        GameView.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
-        GameView.getTreasureDisplay().setText("Has Treasure: " + player.hasTreasure());
+        view.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
+        view.getTreasureDisplay().setText("Has Treasure: " + player.hasTreasure());
 
 
         view.displayMaze(maze);
@@ -185,6 +188,8 @@ public class Game {
     private void updateText(String output) {
         displayText(output);
     }
+
+
 
     public boolean detectValidMove(GameCharacter character, int hTrans, int vTrans) {
         int x = character.getHPos() + hTrans;
