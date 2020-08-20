@@ -8,17 +8,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.LineNumberReader;
 import java.util.Random;
 
 import static edu.neumont.cryptmakers.views.GameView.displayText;
-import static edu.neumont.cryptmakers.views.GameView.getFrame;
 
 
 public class Game {
 
     private int score = 0;
-
 
 
     private static int mazeSize;
@@ -76,40 +73,45 @@ public class Game {
     public int getScore() {
         return this.score;
     }
+
     public Maze getMaze() {
         return this.maze;
     }
+
     public void setScore(int newScore) {
         this.score = newScore;
     }
+
     public void decrementScore(int value) {
         this.score -= value;
     }
+
     public void setMaze(Maze newMaze) {
         this.maze = newMaze;
     }
 
 
-
+    AudioTrack currentBGM = null;
     AudioTrack lostMine = new AudioTrack("music/98_Lost_Mine.wav");
     AudioTrack sleepingOgre = new AudioTrack("music/186_Haunted.wav");
     AudioTrack treasurePickup = new AudioTrack("music/treasure_found.wav");
+    AudioTrack deathAtMyHeels = new AudioTrack("music/Death-At-My-Heels.wav");
+    AudioTrack retroNoHope = new AudioTrack("music/Retro_No hope.wav");
 
     public void run() {
         //TODO: This will be the main controller to control the game
+        currentBGM = lostMine;
         mazeSizePrompt();
         monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
         monster.setPreviousTile(maze.getMaze()[monster.getVPos()][monster.getHPos()].getType());
         view = new GameView();
         set64x(true);
         isGameRunning = true;
-            lostMine.play();
-            sleepingOgre.play();
+        currentBGM.play();
+//            sleepingOgre.play();
 
-        for (int vPos = 0; vPos < maze.getXSize(); vPos++)
-        {
-            for (int hPos = 0; hPos < maze.getYSize(); hPos++)
-            {
+        for (int vPos = 0; vPos < maze.getXSize(); vPos++) {
+            for (int hPos = 0; hPos < maze.getYSize(); hPos++) {
                 Tile t = maze.getMaze()[vPos][hPos];
                 switch (t.getType()) {
                     case PLAYER:
@@ -121,7 +123,7 @@ public class Game {
                     case ENEMY:
                         monster.setHPos(hPos);
                         monster.setVPos(vPos);
-                        if(monster.isAwake()){
+                        if (monster.isAwake()) {
                             t.setVisible(true);
                         }
                 }
@@ -137,10 +139,10 @@ public class Game {
 
     }
 
-    public void mazeSizePrompt(){
+    public void mazeSizePrompt() {
         boolean invalid = true; //store if user needs to be re-prompted
         int tempSize = 0;
-        while(invalid){
+        while (invalid) {
             try {
                 String sizeStr = JOptionPane.showInputDialog("Please enter the size of the maze between 6 and 16"); //open prompt for user input
                 if (sizeStr != null && !sizeStr.isEmpty()) { //make sure the user entered something
@@ -155,11 +157,11 @@ public class Game {
                         //System.out.println(tempSize);
                         invalid = false;
                     }
-                } else{
+                } else {
                     invalid = false;
                     System.exit(1); //exit the program if the user presses cancel
                 }
-            } catch(NumberFormatException nfe){
+            } catch (NumberFormatException nfe) {
                 //error message pop up
                 JOptionPane.showMessageDialog(null, "Please enter a number between 6 and 16", "BAD SIZE", JOptionPane.WARNING_MESSAGE);
             }
@@ -179,16 +181,16 @@ public class Game {
 
     private void updateDisplay() {
         GameView.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
-        GameView.getTreasureDisplay().setText( player.hasTreasure() ? "You have the treasure! " : "");
-        if(player.hasTreasure()) GameView.getTreasureDisplay().setForeground(Color.MAGENTA);
+        GameView.getTreasureDisplay().setText(player.hasTreasure() ? "You have the treasure! " : "");
+        if (player.hasTreasure()) GameView.getTreasureDisplay().setForeground(Color.MAGENTA);
 
         view.displayMaze(maze);
         view.displayTurnCount(turnCount);
     }
+
     private void updateText(String output) {
         displayText(output);
     }
-
 
 
     public boolean detectValidMove(GameCharacter character, int hTrans, int vTrans) {
@@ -204,7 +206,7 @@ public class Game {
 
                 tile.discover();
                 if (tileType != TileEnum.WALL) {
-                    if(tileType != TileEnum.START) {
+                    if (tileType != TileEnum.START) {
                         maze.getMaze()[player.getVPos()][player.getHPos()].setType(TileEnum.PATH);
                         character.move(hTrans, vTrans);
                         tile.setType(TileEnum.PLAYER);
@@ -222,18 +224,16 @@ public class Game {
                             moveCount++;
                         }
                         return true;
-                    } else{
+                    } else {
                         if (monster.isAwake() && player.hasTreasure()) {
                             displayText("You win, well done!");
                             GameView.createEndWindow("images/winner.png"); //TODO
-                            lostMine.stop();
-                            sleepingOgre.stop();
+                            changeBGM(retroNoHope);
                         }
                         if (monster.isAwake() && !player.hasTreasure()) {
                             displayText("It's a draw, next time get the treasure to win!");
                             GameView.createEndWindow("images/you-escaped.png");
-                            lostMine.stop();
-                            sleepingOgre.stop();
+                            changeBGM(retroNoHope);
                         }
 
                     }
@@ -248,7 +248,7 @@ public class Game {
                     maze.getMaze()[character.getVPos()][character.getHPos()].setType(((Monster) character).getPreviousTile());
                     //System.out.println(monster.getPreviousTile());
                     monsterTile = tile;
-                    if(tile.getType() != TileEnum.ENEMY) ((Monster) character).setPreviousTile(tile.getType());
+                    if (tile.getType() != TileEnum.ENEMY) ((Monster) character).setPreviousTile(tile.getType());
                     character.move(hTrans, vTrans);
                     tile.setType(TileEnum.ENEMY);
                     return true;
@@ -264,7 +264,7 @@ public class Game {
                 updateText("");
                 int keyCode = e.getKeyCode();
                 boolean isValidMove = false;
-                switch(keyCode) {
+                switch (keyCode) {
                     case KeyEvent.VK_UP:
                     case KeyEvent.VK_W:
                         //Try to move up
@@ -306,14 +306,16 @@ public class Game {
 //                        updateDisplay();
 //                        break;
                     case KeyEvent.VK_M:
-                        if (m){
+                        if (m) {
                             m = false;
-                            lostMine.pause();
-                            sleepingOgre.pause();
-                        } else if (!m){
+//                            lostMine.pause();
+//                            sleepingOgre.pause();
+                            currentBGM.pause();
+                        } else {
                             m = true;
-                            lostMine.resume();
-                            sleepingOgre.resume();
+//                            lostMine.resume();
+//                            sleepingOgre.resume();
+                            currentBGM.resume();
                         }
 
 
@@ -350,7 +352,7 @@ public class Game {
 
     private void monsterController() {
 
-        switch(monster.distanceFromPlayer(player.getHPos(), player.getVPos())) {
+        switch (monster.distanceFromPlayer(player.getHPos(), player.getVPos())) {
             case 0:
                 loseGame();
                 break;
@@ -359,30 +361,40 @@ public class Game {
                 break;
             case 2:
                 //Alert player that monster is close
-                if(monster.isAwake())displayText("The monster is near");
+                if (monster.isAwake()) displayText("The monster is near");
                 else displayText("You hear the monster stirring!");
                 break;
         }
     }
 
     private void moveMonster() {
-        if(monster.tryToWake(turnCount)) wakeMonster();
+        if (monster.tryToWake(turnCount)) wakeMonster();
         int[] translation = monster.getNextMove(player.getHPos(), player.getVPos());
         detectValidMove(monster, translation[0], translation[1]);
     }
+
     private void wakeMonster() {
-        if(!monster.isAwake()) {
+        if (!monster.isAwake()) {
             displayText("The monster is awake!");
             monster.wakeUp();
+            changeBGM(deathAtMyHeels);
         }
     }
 
     private void wakeMonsterOnDelay(int turnDelay) {
         monster.setWakeTurn(turnCount + turnDelay);
     }
+
     private void loseGame() {
         displayText("The monster ate you! You lose!");
         GameView.createEndWindow("images/youaredead.png"); //TODO
+        changeBGM(retroNoHope);
+    }
+
+    private void changeBGM(AudioTrack newBGM) {
+        currentBGM.stop();
+        currentBGM = newBGM;
+        currentBGM.play();
     }
 
 }
