@@ -1,19 +1,19 @@
 package edu.neumont.cryptmakers.controllers;
 
 public class Main {
+    private static Game game;
     public static void main(String[] args) {
 //        System.out.println("Starting up application...");
         run();
     }
     public static void run() {
-        boolean keepPlaying = true;
 
-        //TODO: Starting menu
-        Game game = new Game();
+        game = new Game();
         game.run();
 
-            //keepPlaying = false;
-            //TODO: prompt user if they want to play again. set returned bool to keepPlaying variable
-        }
+    }
+    public static void restart() {
+        game.restart();
+    }
 
 }

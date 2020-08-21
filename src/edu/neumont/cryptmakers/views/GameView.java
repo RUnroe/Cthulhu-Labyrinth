@@ -1,6 +1,7 @@
 package edu.neumont.cryptmakers.views;
 
 import edu.neumont.cryptmakers.controllers.Game;
+import edu.neumont.cryptmakers.controllers.Main;
 import edu.neumont.cryptmakers.models.Maze;
 import edu.neumont.cryptmakers.models.Tile;
 import edu.neumont.cryptmakers.models.TileEnum;
@@ -10,6 +11,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -384,11 +387,22 @@ public class GameView {
             //        frame.getContentPane().add(getTextDisplay());
             Container c = new JPanel();
             c.add(new JLabel(new ImageIcon(fileName)));
+            JButton button = new JButton("Restart");
+            button.addActionListener(e -> restartGame());
+            button.setBounds(300,550,100,50);
+
+            frame.getContentPane().add(button);
             frame.getContentPane().add(c);
+
 
             frame.revalidate();
             frame.repaint();
-    }
+        }
+        private static void restartGame() {
+            frame.getContentPane().removeAll();
+            frame.dispose();
+            Main.restart();
+        }
 
 
 
