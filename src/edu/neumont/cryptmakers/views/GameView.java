@@ -42,13 +42,16 @@ public class GameView {
     private final int JFrameWidth = 700;
     private final int JFrameHeight = 730;
 
+    private final CustomCanvas canvas = new CustomCanvas();
+
     public GameView() {
+//        createIntroWindow();
         setupFrameView();
         for (int i = 0; i < 5; i++) {
-            playerSprites[i] = new ImageIcon("images/sprite_player_"+ (i+1) +".png");
+            playerSprites[i] = new ImageIcon("images/sprite_player_" + (i + 1) + ".png");
             int pImgNum = genRandNum(1, 10);
             playerSprite = playerSprites[pImgNum <= 2 ? 0 : pImgNum <= 4 ? 1 :
-                    pImgNum <= 6 ? 2 : pImgNum <= 8 ? 3 : 4 ];
+                    pImgNum <= 6 ? 2 : pImgNum <= 8 ? 3 : 4];
         }
 
     }
@@ -139,16 +142,16 @@ public class GameView {
 //        tilePanel.add( new GameTile(...) );
 //        tilePanel.add( new GameTile(...) );
 
-        JPanel wrapper = new JPanel( new GridBagLayout() );
-        wrapper.add(mapContainer, new GridBagConstraints() );
-        frame.add(wrapper, BorderLayout.NORTH );
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.add(mapContainer, new GridBagConstraints());
+        frame.add(wrapper, BorderLayout.NORTH);
 //        frame.add(wrapper, BorderLayout.LINE_END);
 
 //        setupJTextPaneComponent(MazeDisplay, BorderLayout.NORTH, 350);
         setupJTextPaneComponent(ScoreDisplay, BorderLayout.CENTER, 30);
         setupJTextPaneComponent(TextDisplay, BorderLayout.CENTER, 30);
         setupJTextPaneComponent(TreasureDisplay, BorderLayout.CENTER, 200);
-    setupJTextPaneComponent(SpeedDisplay, BorderLayout.CENTER, 300);
+        setupJTextPaneComponent(SpeedDisplay, BorderLayout.CENTER, 300);
 
         frame.add(clickContainer);
 //        frame.add(mapContainer);
@@ -157,14 +160,13 @@ public class GameView {
         frame.pack();
         frame.setVisible(true);
 
-
     }
 
     public ImageIcon getScaledImage(ImageIcon imageIcon) {
         return new ImageIcon(imageIcon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
     }
 
-//    private void setupKeyPressEventListener(JComponent component) {
+    //    private void setupKeyPressEventListener(JComponent component) {
 //        component.addKeyListener(new KeyAdapter() {
 //            public void keyPressed(KeyEvent e) {
 //                int keyCode = e.getKeyCode();
@@ -190,15 +192,15 @@ public class GameView {
 //        });
 //    }
     private void setupJTextPaneComponent(JTextPane component, String pos, int height) {
-        SimpleAttributeSet attrs=new SimpleAttributeSet();
-        StyleConstants.setAlignment(attrs,StyleConstants.ALIGN_CENTER);
+        SimpleAttributeSet attrs = new SimpleAttributeSet();
+        StyleConstants.setAlignment(attrs, StyleConstants.ALIGN_CENTER);
         clickContainer.add(component, pos);
         component.setEditable(false);
         component.setFocusable(false);
         component.setPreferredSize(new Dimension(JFrameWidth, height));
-        StyledDocument doc=(StyledDocument)component.getDocument();
-        doc.setParagraphAttributes(0,doc.getLength()-1,attrs,false);
-        component.setFont( new Font("Courier", Font.PLAIN,16));
+        StyledDocument doc = (StyledDocument) component.getDocument();
+        doc.setParagraphAttributes(0, doc.getLength() - 1, attrs, false);
+        component.setFont(new Font("Courier", Font.PLAIN, 16));
     }
 
 
@@ -260,7 +262,7 @@ public class GameView {
                             break;
                         default:
 //                            mazeString += "#";
-                        t.setImage(is64x() ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
+                            t.setImage(is64x() ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
                             break;
                     }
                 } else if (t.getType() == TileEnum.PLAYER || t.getType() == TileEnum.START) {
@@ -277,8 +279,7 @@ public class GameView {
 //        this.MazeDisplay.setText(mazeString);
         mapContainer.removeAll();
         for (int vPos = 0; vPos < m.getXSize(); vPos++) {
-            for (int hPos = 0; hPos < m.getYSize(); hPos++)
-            {
+            for (int hPos = 0; hPos < m.getYSize(); hPos++) {
                 Tile t = m.getMaze()[vPos][hPos];
                 JLabel imageLabel = new JLabel(t.getImage());
                 imageLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -287,16 +288,25 @@ public class GameView {
                 GameView.getFrame().revalidate();
                 GameView.getFrame().repaint();
 
+
             }
         }
+
+//        for (Tile[] tiles : m.getMaze()) {
+//            for (Tile t : tiles) {
+//                t.getImage().paintIcon(frame, frame.getGraphics(), 0,0);
+//            }
     }
 
+//    }
 
 
     public void displayTurnCount(int turnCount) {
         this.ScoreDisplay.setText("Turn count: " + turnCount);
     }
-
+//        canvas.paint(frame.getGraphics(), new ImageIcon("images/treasure.png"), 0,0);
+//        frame.validate();
+//        frame.repaint();
 
 
     public static void displayText(String text) {
@@ -403,6 +413,35 @@ public class GameView {
             frame.dispose();
             Main.restart();
         }
+
+    public static void createIntroWindow() {
+//        frame.getContentPane().removeAll();
+        //        frame.getContentPane().add(getTextDisplay());
+        Container c = new JPanel();
+        JTextPane textDisplay = new JTextPane();
+        String text = "Welcome to Cthulhu's Labyrinth";
+        text += "\nYou have entered the treacherous dungeon in search" +
+                "\nof mystical treasures that will make you reich and famous." +
+                "\nYour goal is to find the treasure and make it back to the entrance." +
+                "There is an ancient guardian sleeping somewhere. If you manage to wake " +
+                "\nthe beast, run for your life back to the entrance. It will kill you" +
+                "\notherwise. Good luck, adventurer!" +
+                "\n\nControls: \nMovement: Arrow keys or WASD keys\nVolume: Minus and Equals keys" +
+                "\nTip: Pay attention to the text at the bottom of the screen!";
+        textDisplay.setText(text);
+//        c.add(textDisplay);
+        JButton button = new JButton("Begin");
+        button.addActionListener(e -> frame.getContentPane().removeAll());
+        button.setBounds(300,550,100,50);
+
+        frame.getContentPane().add(textDisplay);
+        frame.getContentPane().add(button);
+        frame.getContentPane().add(c);
+
+
+        frame.revalidate();
+        frame.repaint();
+    }
 
 
 

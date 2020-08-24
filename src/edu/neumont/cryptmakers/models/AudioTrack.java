@@ -9,6 +9,43 @@ public class AudioTrack {
     private File track;
     private Clip clip;
     private long position;
+    private FloatControl gainControl;
+    private float volume;
+
+    public FloatControl getGainControl() {
+        return gainControl;
+    }
+
+    public void setGainControl(FloatControl gainControl) {
+        this.gainControl = gainControl;
+    }
+
+    public float getVolume() {
+        return getGainControl().getValue();
+    }
+
+    public void setVolume(float volume) {
+        getGainControl().setValue(volume);
+    }
+
+    private float getMinVolume() {
+        return getGainControl().getMinimum();
+    }
+
+    private float getMaxVolume() {
+        return getGainControl().getMaximum();
+    }
+
+    public void changeVolume(float deltaVolume) {
+        float newVolume = getVolume() + deltaVolume;
+        if (newVolume >= getMinVolume() && newVolume <= getMaxVolume()) {
+            setVolume(newVolume);
+        } else if (newVolume < getMinVolume()) {
+            setVolume(getMinVolume());
+        } else {
+            setVolume(getMaxVolume());
+        }
+    }
 
     public AudioTrack(String filename) {
         try {
@@ -93,6 +130,16 @@ public class AudioTrack {
         play();
     }
 
+    //Raises volume
+    public void increaseVolume() {
+        changeVolume(+5.0f); // Increase volume by 5 decibels.
+    }
+
+    //Lowers volume
+    public void decreaseVolume() {
+        changeVolume(-5.0f); // Decrease volume by 5 decibels.
+    }
+
 
     //Call to reset everything except the track file
     public void refresh() {
@@ -101,6 +148,7 @@ public class AudioTrack {
             setClip(AudioSystem.getClip());
             setPosition(0L);
             getClip().open(getStream());
+            setGainControl((FloatControl)getClip().getControl(FloatControl.Type.MASTER_GAIN));
 //            getClip().loop(Clip.LOOP_CONTINUOUSLY);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();

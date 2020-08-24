@@ -14,8 +14,6 @@ public class Monster extends GameCharacter{
 
     public void wakeUp() {
         setAwake(true);
-        AudioTrack monsterAlarm = new AudioTrack("music/monster1.wav");
-        monsterAlarm.play();
     }
 
     //Monster will move diagonally first. This means that it will move diagonally until one or both of the offsets == 0

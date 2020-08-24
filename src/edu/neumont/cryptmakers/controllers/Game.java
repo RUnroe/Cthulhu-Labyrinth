@@ -10,6 +10,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
+import static edu.neumont.cryptmakers.views.GameView.createIntroWindow;
 import static edu.neumont.cryptmakers.views.GameView.displayText;
 
 
@@ -97,6 +98,7 @@ public class Game {
     AudioTrack treasurePickup = new AudioTrack("music/treasure_found.wav");
     AudioTrack deathAtMyHeels = new AudioTrack("music/Death-At-My-Heels.wav");
     AudioTrack retroNoHope = new AudioTrack("music/Retro_No hope.wav");
+    AudioTrack monsterGrowl = new AudioTrack("music/monster-growl.wav");
 
     public Game() {
         setupKeyPressEventListener(GameView.getClickContainer());
@@ -127,6 +129,7 @@ public class Game {
         run();
     }
     public void run() {
+//        createIntroWindow();
         currentBGM = lostMine;
         mazeSizePrompt();
         monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
@@ -354,12 +357,40 @@ public class Game {
                             /*setMapShown(!mapShown);
                             updateDisplay();*/
 
-                    case KeyEvent.VK_R:
-                        /*set64x(!is64x());
-                        updateDisplay();*/
+                    case KeyEvent.VK_MINUS:
+                        lowerVolume();
+                        System.out.println("Current Volume: " + currentBGM.getVolume());
+                        break;
+
+                    case KeyEvent.VK_EQUALS:
+                        raiseVolume();
+                        System.out.println("Current Volume: " + currentBGM.getVolume());
+                        break;
+
+//                    case KeyEvent.VK_R:
+//                        set64x(!is64x());
+//                        updateDisplay();
+
                 }
+
             }
         });
+    }
+
+    private void lowerVolume() {
+        lostMine.decreaseVolume();
+        monsterGrowl.decreaseVolume();
+        deathAtMyHeels.decreaseVolume();
+        treasurePickup.decreaseVolume();
+        retroNoHope.decreaseVolume();
+    }
+
+    private void raiseVolume() {
+        lostMine.increaseVolume();
+        monsterGrowl.increaseVolume();
+        deathAtMyHeels.increaseVolume();
+        treasurePickup.increaseVolume();
+        retroNoHope.increaseVolume();
     }
 
     private void incrementTurn() {
@@ -397,6 +428,7 @@ public class Game {
         if (!monster.isAwake()) {
             displayText("The monster is awake!");
             monster.wakeUp();
+            monsterGrowl.play();
             changeBGM(deathAtMyHeels);
         }
     }
