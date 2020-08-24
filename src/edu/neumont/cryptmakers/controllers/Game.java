@@ -204,7 +204,7 @@ public class Game {
 
     private void updateDisplay() {
         GameView.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
-        GameView.getTreasureDisplay().setText(player.hasTreasure() ? "You have the treasure! " : "");
+        GameView.getTreasureDisplay().setText(player.hasTreasure() ? "You have the treasure! Return to the start before the monster gets you!" : "");
         if (player.hasTreasure()) GameView.getTreasureDisplay().setForeground(Color.MAGENTA);
 
         view.displayMaze(maze);
@@ -434,7 +434,7 @@ public class Game {
 
     private void wakeMonster() {
         if (!monster.isAwake()) {
-            displayText("The monster is awake!");
+            displayText("The monster is awake! Return to start to escape!");
             monster.wakeUp();
             monsterGrowl.play();
             changeBGM(deathAtMyHeels);
