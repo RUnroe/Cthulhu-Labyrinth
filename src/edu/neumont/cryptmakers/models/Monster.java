@@ -4,6 +4,7 @@ public class Monster extends GameCharacter{
     boolean isAwake = false;
     private TileEnum previousTile;
     private int wakeTurn = -1;
+    private boolean wasVisible;
     public boolean isAwake() {
         return isAwake;
     }
@@ -54,6 +55,15 @@ public class Monster extends GameCharacter{
     public void setPreviousTile(TileEnum tile) {
         this.previousTile = tile;
     }
+
+    public void setWasVisible(Tile tile){
+        wasVisible = tile.isVisible();
+    }
+
+    public boolean getWasVisible(){
+        return wasVisible;
+    }
+
     public boolean tryToWake(int turnCount) {
         return turnCount == this.wakeTurn;
     }

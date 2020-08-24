@@ -269,11 +269,19 @@ public class Game {
             } else if (character instanceof Monster) {
                 if (((Monster) character).isAwake()) {
                     maze.getMaze()[character.getVPos()][character.getHPos()].setType(((Monster) character).getPreviousTile());
+                    if( !((Monster) character).getWasVisible()){
+                        maze.getMaze()[character.getVPos()][character.getHPos()].setVisible(((Monster) character).getWasVisible());
+                    }
+
                     //System.out.println(monster.getPreviousTile());
                     monsterTile = tile;
                     if (tile.getType() != TileEnum.ENEMY) ((Monster) character).setPreviousTile(tile.getType());
+                    ((Monster) character).setWasVisible(tile);
                     character.move(hTrans, vTrans);
                     tile.setType(TileEnum.ENEMY);
+
+                    tile.setVisible(true);
+
                     return true;
                 }
             }
