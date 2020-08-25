@@ -4,6 +4,7 @@ public class Monster extends GameCharacter{
     boolean isAwake = false;
     private TileEnum previousTile;
     private int wakeTurn = -1;
+    private boolean wasVisible;
     public boolean isAwake() {
         return isAwake;
     }
@@ -14,8 +15,6 @@ public class Monster extends GameCharacter{
 
     public void wakeUp() {
         setAwake(true);
-        AudioTrack monsterAlarm = new AudioTrack("music/monster1.wav");
-        monsterAlarm.play();
     }
 
     //Monster will move diagonally first. This means that it will move diagonally until one or both of the offsets == 0
@@ -56,6 +55,15 @@ public class Monster extends GameCharacter{
     public void setPreviousTile(TileEnum tile) {
         this.previousTile = tile;
     }
+
+    public void setWasVisible(Tile tile){
+        wasVisible = tile.isVisible();
+    }
+
+    public boolean getWasVisible(){
+        return wasVisible;
+    }
+
     public boolean tryToWake(int turnCount) {
         return turnCount == this.wakeTurn;
     }

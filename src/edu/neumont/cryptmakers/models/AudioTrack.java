@@ -9,11 +9,47 @@ public class AudioTrack {
     private File track;
     private Clip clip;
     private long position;
+    private FloatControl gainControl;
+
+    public FloatControl getGainControl() {
+        return gainControl;
+    }
+
+    public void setGainControl(FloatControl gainControl) {
+        this.gainControl = gainControl;
+    }
+
+    public float getVolume() {
+        return getGainControl().getValue();
+    }
+
+    public void setVolume(float volume) {
+        getGainControl().setValue(volume);
+    }
+
+    private float getMinVolume() {
+        return getGainControl().getMinimum();
+    }
+
+    private float getMaxVolume() {
+        return getGainControl().getMaximum();
+    }
+
+    public void changeVolume(float deltaVolume) {
+        float newVolume = getVolume() + deltaVolume;
+        if (newVolume >= getMinVolume() && newVolume <= getMaxVolume()) {
+            setVolume(newVolume);
+        } else if (newVolume < getMinVolume()) {
+            setVolume(getMinVolume());
+        } else {
+            setVolume(getMaxVolume());
+        }
+    }
 
     public AudioTrack(String filename) {
         try {
             setTrack(new File(filename));
-            refresh();
+            refresh(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,7 +104,7 @@ public class AudioTrack {
 
     //Refreshes track with stored clip position and plays
     public void resume() {
-        refresh();
+        refresh(false);
         System.out.println("Track refreshed..");
         getClip().setMicrosecondPosition(getPosition());
         System.out.println("Pos: " + getPosition());
@@ -89,18 +125,31 @@ public class AudioTrack {
     //Uses stop method and automatically starts playing again from the beginning
     public void restart() {
         stop();
-        refresh();
+        refresh(true);
         play();
+    }
+
+    //Raises volume
+    public void increaseVolume() {
+        changeVolume(+5.0f); // Increase volume by 5 decibels.
+    }
+
+    //Lowers volume
+    public void decreaseVolume() {
+        changeVolume(-5.0f); // Decrease volume by 5 decibels.
     }
 
 
     //Call to reset everything except the track file
-    public void refresh() {
+    public void refresh(boolean startsAtZero) {
         try {
             setStream(AudioSystem.getAudioInputStream(getTrack()));
             setClip(AudioSystem.getClip());
-            setPosition(0L);
+            if (startsAtZero) setPosition(0L);
             getClip().open(getStream());
+            setGainControl((FloatControl)getClip().getControl(FloatControl.Type.MASTER_GAIN));
+            setVolume(-10.0f);
+
 //            getClip().loop(Clip.LOOP_CONTINUOUSLY);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
