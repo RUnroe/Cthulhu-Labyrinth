@@ -10,8 +10,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
-import static edu.neumont.cryptmakers.views.GameView.createIntroWindow;
-import static edu.neumont.cryptmakers.views.GameView.displayText;
+import static edu.neumont.cryptmakers.views.GameView.*;
 
 
 public class Game {
@@ -157,7 +156,8 @@ public class Game {
                 }
             }
         }
-        updateDisplay();
+        createMapDisplay(maze);
+//        updateDisplay();
 
 
     }
@@ -209,6 +209,8 @@ public class Game {
 
         view.displayMaze(maze);
         view.displayTurnCount(turnCount);
+        getFrame().pack();
+//        getFrame().repaint();
     }
 
     private void updateText(String output) {

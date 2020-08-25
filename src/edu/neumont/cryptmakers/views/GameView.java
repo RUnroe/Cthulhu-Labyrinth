@@ -3,6 +3,7 @@ package edu.neumont.cryptmakers.views;
 import edu.neumont.cryptmakers.controllers.Game;
 import edu.neumont.cryptmakers.controllers.Main;
 import edu.neumont.cryptmakers.models.Maze;
+import edu.neumont.cryptmakers.models.Sprite;
 import edu.neumont.cryptmakers.models.Tile;
 import edu.neumont.cryptmakers.models.TileEnum;
 
@@ -38,9 +39,17 @@ public class GameView {
     public static final ImageIcon treasureSprite = new ImageIcon("images/sprite_treasure.png");
     public static final ImageIcon startSprite = new ImageIcon("images/sprite_door.png");
     public static final ImageIcon undiscoveredSprite = new ImageIcon("images/sprite_darkness.png");
+    public static final String[] playerSpritePaths = new String[5];
+    public static final String playerSpritePath = "src/images/sprite_player.png";
+    public static final String monsterSpritePath = "src/images/sprite_mage.png";
+    public static final String floorSpritePath = "src/images/sprite_floor.png";
+    public static final String[] wallSpritePaths = {"src/images/sprite_wall.png",};
+    public static final String treasureSpritePath = "src/images/sprite_treasure.png";
+    public static final String startSpritePath = "src/images/sprite_door.png";
+    public static final String undiscoveredSpritePath = "src/images/sprite_mage.png";
 
-    private final int JFrameWidth = 700;
-    private final int JFrameHeight = 730;
+    private final int JFrameWidth = 1000/*700*/;
+    private final int JFrameHeight = 1200/*730*/;
 
     private final CustomCanvas canvas = new CustomCanvas();
 
@@ -144,8 +153,10 @@ public class GameView {
 
         JPanel wrapper = new JPanel(new GridBagLayout());
         wrapper.add(mapContainer, new GridBagConstraints());
+//        frame.add(mapContainer, BorderLayout.NORTH);
+//        mapContainer.setSize(700, 700);
+//        frame.add(mapContainer);
         frame.add(wrapper, BorderLayout.NORTH);
-//        frame.add(wrapper, BorderLayout.LINE_END);
 
 //        setupJTextPaneComponent(MazeDisplay, BorderLayout.NORTH, 350);
         setupJTextPaneComponent(ScoreDisplay, BorderLayout.CENTER, 30);
@@ -230,7 +241,25 @@ public class GameView {
         }
         this.MazeDisplay.setText(mazeString);*/
 
-//        String mazeString = "";
+        String mazeString = "";
+//        frame = new JFrame("Help");
+//        frame.add(new Sprite("src/images/sprite_player.png"));
+//        JPanel panel = new JPanel();
+//        frame.add(panel);
+        for (Tile[] tiles : m.getMaze()) {
+//            for (JLabel[] l : labels)
+//            for (int i = 0; i < l.length; i++) {
+//                l[i].setIcon(tiles[i].getImage());
+//            }
+            for (Tile t : tiles) {
+//                t.setX(t.getX()*16);
+//                t.setY(t.getY()*16);
+//                t.sprite.getImg().getScaledInstance(32, 32, Image.SCALE_SMOOTH)
+//                mapContainer.add(t);
+//                t.setLocation(t.getX(), t.getY());
+            }
+        }
+
         for (Tile[] tiles : m.getMaze()) {
             for (Tile t : tiles) {
                 TileEnum type = t.getType();
@@ -238,67 +267,152 @@ public class GameView {
                     switch (type) {
                         case PLAYER:
 //                            mazeString += " P";
-                            t.setImage(is64x() ? getScaledImage(playerSprite) : playerSprite);
+//                            t.setImage(is64x() ? getScaledImage(playerSprite) : playerSprite);
+//                            t.sprite.loadImg(playerSpritePath);
+//                            t.label.setIcon(getScaledImage(playerSprite));
+                            t.changeImage(playerSpritePath);
+
                             break;
                         case ENEMY:
 //                            mazeString += "M";
-                            t.setImage(is64x() ? getScaledImage(monsterSprite) : monsterSprite);
+//                            t.setImage(is64x() ? getScaledImage(monsterSprite) : monsterSprite);
+//                            t.sprite.loadImg(monsterSpritePath);
+//                            t.label.setIcon(getScaledImage(monsterSprite));
+                            t.changeImage(monsterSpritePath);
                             break;
                         case TREASURE:
 //                            mazeString += "T";
-                            t.setImage(is64x() ? getScaledImage(treasureSprite) : treasureSprite);
+//                            t.setImage(is64x() ? getScaledImage(treasureSprite) : treasureSprite);
+//                            t.sprite.loadImg(treasureSpritePath);
+//                            t.label.setIcon(getScaledImage(treasureSprite));
+                            t.changeImage(treasureSpritePath);
                             break;
                         case START:
 //                            mazeString += "S";
-                            t.setImage(is64x() ? getScaledImage(startSprite) : startSprite);
+//                            t.setImage(is64x() ? getScaledImage(startSprite) : startSprite);
+//                            t.sprite.loadImg(startSpritePath);
+//                            t.label.setIcon(getScaledImage(startSprite));
+                            t.changeImage(startSpritePath);
                             break;
                         case PATH:
 //                            mazeString += "'~,";
-                            t.setImage(is64x() ? getScaledImage(pathSprite) : pathSprite);
+//                            t.setImage(is64x() ? getScaledImage(pathSprite) : pathSprite);
+//                            t.sprite.loadImg(floorSpritePath);
+//                            t.label.setIcon(getScaledImage(pathSprite));
+                            t.changeImage(floorSpritePath);
                             break;
                         case WALL:
 //                            mazeString += "\u2589 ";
-                            t.setImage(is64x() ? getScaledImage(wallSprites[(t.imageNum >= 4 ? 0 : 1)]) : wallSprites[(t.imageNum >= 4 ? 0 : 1)]);
+//                            t.setImage(is64x() ? getScaledImage(wallSprites[(t.imageNum >= 4 ? 0 : 1)]) : wallSprites[(t.imageNum >= 4 ? 0 : 1)]);
+//                            t.sprite.loadImg(wallSpritePaths[0]);
+//                            t.label.setIcon(getScaledImage(wallSprites[(t.imageNum >= 4 ? 0 : 1)]));
+                            t.changeImage(wallSpritePaths[0]);
                             break;
                         default:
 //                            mazeString += "#";
-                            t.setImage(is64x() ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
+//                            t.setImage(is64x() ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
+//                            t.sprite.loadImg(undiscoveredSpritePath);
+//                            t.label.setIcon(getScaledImage(undiscoveredSprite));
+                            t.changeImage(undiscoveredSpritePath);
                             break;
                     }
                 } else if (t.getType() == TileEnum.PLAYER || t.getType() == TileEnum.START) {
                     t.discover();
                 } else {
-                    t.setImage(is64x() ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
+//                    t.setImage(is64x() ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
+//                    t.sprite.loadImg(undiscoveredSpritePath);
+//                    t.label.setIcon(t.getImage());
+                    t.changeImage(undiscoveredSpritePath );
                 }
-
             }
+//            frame.repaint();
 
 
 //            mazeString += "\n";
         }
 //        this.MazeDisplay.setText(mazeString);
-        mapContainer.removeAll();
-        for (int vPos = 0; vPos < m.getXSize(); vPos++) {
-            for (int hPos = 0; hPos < m.getYSize(); hPos++) {
-                Tile t = m.getMaze()[vPos][hPos];
-                JLabel imageLabel = new JLabel(t.getImage());
-                imageLabel.setHorizontalAlignment(SwingConstants.LEFT);
-                imageLabel.setVerticalAlignment(SwingConstants.TOP);
-                GameView.getMapContainer().add(imageLabel);
-                GameView.getFrame().revalidate();
-                GameView.getFrame().repaint();
+//        mapContainer.removeAll();
+//        for (int vPos = 0; vPos < m.getXSize(); vPos++) {
+//            for (int hPos = 0; hPos < m.getYSize(); hPos++) {
+//                Tile t = m.getMaze()[vPos][hPos];
+//                JLabel imageLabel = new JLabel(t.getImage());
+//                imageLabel.setHorizontalAlignment(SwingConstants.LEFT);
+//                imageLabel.setVerticalAlignment(SwingConstants.TOP);
+//                GameView.getMapContainer().add(imageLabel);
+//                GameView.getFrame().revalidate();
+//                GameView.getFrame().repaint();
+//
+//
+//            }
+//            this.MazeDisplay.setText(mazeString);
+//        mapContainer.removeAll();
+//        for (int vPos = 0; vPos < m.getXSize(); vPos++) {
+//            for (int hPos = 0; hPos < m.getYSize(); hPos++) {
+//                Tile t = m.getMaze()[vPos][hPos];
+////                t.setX(hPos);
+////                t.setY(vPos);
+////                t.sprite.getImg().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+////                mapContainer.add(t);
+//                getMapContainer().add(t);
+////                JLabel imageLabel = new JLabel(t.getImage());
+////                imageLabel.setHorizontalAlignment(SwingConstants.LEFT);
+////                imageLabel.setVerticalAlignment(SwingConstants.TOP);
+////                GameView.getMapContainer().add(imageLabel);
+////                GameView.getFrame().revalidate();
+//                getFrame().repaint();
+//
+//
+//            }
 
-
-            }
-        }
+//        }
+    }
 
 //        for (Tile[] tiles : m.getMaze()) {
 //            for (Tile t : tiles) {
 //                t.getImage().paintIcon(frame, frame.getGraphics(), 0,0);
 //            }
-    }
+//    }
 
 //    }
+    static JLabel[][] labels;
+    public static void createMapDisplay(Maze m) {
+//        labels = new JLabel[m.getMaze().length][m.getMaze().length];
+//        mapContainer.removeAll();
+        for (Tile[] tiles : m.getMaze()) {
+            for (Tile t : tiles) {
+                t.label.setHorizontalAlignment(SwingConstants.LEFT);
+                t.label.setVerticalAlignment(SwingConstants.TOP);
+                GameView.getMapContainer().add(t.label);
+            }
+//            for (JLabel[] l : labels) {
+//                for (int i = 0; i < l.length; i++) {
+//                    l[i] = new JLabel(tiles[i].getImage());
+//                }
+//            }
+        }
+//        mapContainer.removeAll();
+//        for (JLabel l[] : labels) {
+//            for (int i = 0; i < l.length; i++) {
+//                l[i].setHorizontalAlignment(SwingConstants.LEFT);
+//                l[i].setVerticalAlignment(SwingConstants.TOP);
+//                GameView.getMapContainer().add(l[i]);
+//            }
+//        }
+//        getMapContainer().repaint();
+
+//        for (int vPos = 0; vPos < m.getXSize(); vPos++) {
+//            for (int hPos = 0; hPos < m.getYSize(); hPos++) {
+//                Tile t = m.getMaze()[vPos][hPos];
+//                JLabel imageLabel = new JLabel(t.getImage());
+//                imageLabel.setHorizontalAlignment(SwingConstants.LEFT);
+//                imageLabel.setVerticalAlignment(SwingConstants.TOP);
+//                GameView.getMapContainer().add(imageLabel);
+//                GameView.getFrame().revalidate();
+//                GameView.getFrame().repaint();
+//
+//            }
+//        }
+    }
 
 
     public void displayTurnCount(int turnCount) {
@@ -392,27 +506,29 @@ public class GameView {
             return promptForInt(menuString, min, max);
         }
     }
-        public static void createEndWindow(String fileName) {
-            frame.getContentPane().removeAll();
-            //        frame.getContentPane().add(getTextDisplay());
-            Container c = new JPanel();
-            c.add(new JLabel(new ImageIcon(fileName)));
-            JButton button = new JButton("Restart");
-            button.addActionListener(e -> restartGame());
-            button.setBounds(300,550,100,50);
 
-            frame.getContentPane().add(button);
-            frame.getContentPane().add(c);
+    public static void createEndWindow(String fileName) {
+        frame.getContentPane().removeAll();
+        //        frame.getContentPane().add(getTextDisplay());
+        Container c = new JPanel();
+        c.add(new JLabel(new ImageIcon(fileName)));
+        JButton button = new JButton("Restart");
+        button.addActionListener(e -> restartGame());
+        button.setBounds(300, 550, 100, 50);
+
+        frame.getContentPane().add(button);
+        frame.getContentPane().add(c);
 
 
-            frame.revalidate();
-            frame.repaint();
-        }
-        private static void restartGame() {
-            frame.getContentPane().removeAll();
-            frame.dispose();
-            Main.restart();
-        }
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    private static void restartGame() {
+        frame.getContentPane().removeAll();
+        frame.dispose();
+        Main.restart();
+    }
 
     public static void createIntroWindow() {
 //        frame.getContentPane().removeAll();
@@ -432,7 +548,7 @@ public class GameView {
 //        c.add(textDisplay);
         JButton button = new JButton("Begin");
         button.addActionListener(e -> frame.getContentPane().removeAll());
-        button.setBounds(300,550,100,50);
+        button.setBounds(300, 550, 100, 50);
 
         frame.getContentPane().add(textDisplay);
         frame.getContentPane().add(button);
@@ -442,7 +558,6 @@ public class GameView {
         frame.revalidate();
         frame.repaint();
     }
-
 
 
 }

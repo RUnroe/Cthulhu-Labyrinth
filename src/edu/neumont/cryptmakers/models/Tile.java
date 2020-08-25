@@ -1,11 +1,16 @@
 package edu.neumont.cryptmakers.models;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static edu.neumont.cryptmakers.controllers.Game.genRandNum;
 
-public class Tile {
+public class Tile extends JLabel{
 
     boolean visible = false;
 
@@ -20,7 +25,10 @@ public class Tile {
     // Stores the identifier for the cell
 
     private TileEnum type;
-    private ImageIcon image = new ImageIcon("src/images/sprite_darkness.png");
+    private Image image;
+    private ImageIcon icon = new ImageIcon("images/sprite_darkness.png");
+    public final JLabel label = new JLabel(icon);
+    public final Sprite sprite;
     public final int imageNum = (genRandNum(1, 10));
 
     // Stores the x-coordinate of the cell
@@ -40,14 +48,49 @@ public class Tile {
         setType(type);
         setX(x);
         setY(y);
+        changeImage("images/sprite_darkness.png");
+        label.setPreferredSize(new Dimension(getIcon().getIconWidth(), getIcon().getIconHeight()));
+        System.out.println("X: " + getX() + " | Y: " + getY());
+        sprite = new Sprite("src/images/sprite_darkness.png", getX(), getY());
     }
 
-    public ImageIcon getImage() {
+    public Image getImage() {
         return image;
     }
 
-    public void setImage(ImageIcon image) {
+    public Image getScaledImage() {
+        return image.getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+    }
+
+    public void setImage(String imgPath) {
+        BufferedImage image= null;
+        try {
+            image = ImageIO.read(new File(imgPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.image = image;
+    }
+
+    @Override
+    public ImageIcon getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Image img) {
+        this.icon.setImage(img);
+    }
+
+    public void changeImage(String imgPath) {
+        setImage(imgPath);
+
+        setIcon(getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+
+        setPreferredSize(new Dimension(32, 32));
+
+        getImage().flush();
+
+        label.setIcon(getIcon());
     }
 
     // Returns the tile's neighbors in grids/maps
@@ -200,5 +243,11 @@ public class Tile {
 
     public void discover() {
         setVisible(true);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        sprite.paint(g);
     }
 }

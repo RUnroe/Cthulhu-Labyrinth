@@ -208,7 +208,10 @@ public class Maze {
     public void initializeMaze() {
         for (int x = 0; x < getXSize(); x++) {
             for (int y = 0; y < getYSize(); y++) {
-                maze[x][y] = new Tile(TileEnum.WALL, x, y);
+                Tile tile = new Tile(TileEnum.WALL, x, y);
+                tile.setPreferredSize(tile.sprite.getPreferredSize());
+                tile.setSize(16, 16);
+                maze[x][y] = tile;
 
             }
         }
