@@ -140,16 +140,17 @@ public class Game {
     public void mazeSizePrompt() {
         boolean invalid = true; //store if user needs to be re-prompted
         int tempSize = 0;
+        int min = 8, max = 18;
         while (invalid) {
             try {
-                String sizeStr = JOptionPane.showInputDialog("Please enter the size of the maze between 6 and 16"); //open prompt for user input
+                String sizeStr = JOptionPane.showInputDialog("Please enter the size of the maze between " + min + " and " + max); //open prompt for user input
                 if (sizeStr != null && !sizeStr.isEmpty()) { //make sure the user entered something
                     //System.out.println("sizeStr is not empty");
                     tempSize = Integer.parseInt(sizeStr); //set the size to the user input
                     //System.out.println(tempSize);
-                    if (tempSize < 6 || tempSize > 16) { //the maze can be no larger than 16 and no smaller than 6
+                    if (tempSize < min || tempSize > max) { //the maze can be no larger than 16 and no smaller than 6
                         //error message pop up
-                        JOptionPane.showMessageDialog(null, "Please enter a number between 6 and 16", "BAD SIZE", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Please enter the size of the maze between " + min + " and " + max, "BAD SIZE", JOptionPane.WARNING_MESSAGE);
                         invalid = true;
                     } else { //user entered a valid size
                         //System.out.println(tempSize);
@@ -161,7 +162,7 @@ public class Game {
                 }
             } catch (NumberFormatException nfe) {
                 //error message pop up
-                JOptionPane.showMessageDialog(null, "Please enter a number between 6 and 16", "BAD SIZE", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Please enter the size of the maze between " + min + " and " + max, "BAD SIZE", JOptionPane.WARNING_MESSAGE);
             }
 
         } // end while
