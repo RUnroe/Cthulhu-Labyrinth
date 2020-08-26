@@ -32,6 +32,7 @@ public class Game {
     private boolean hasEscaped = false;
     private boolean isValidMove = false;
     private boolean m = true;
+    private boolean allowMonsterDiagonals = false;
     Player player = new Player();
     Monster monster = new Monster();
     Tile monsterTile;
@@ -357,19 +358,7 @@ public class Game {
 
 
                         break;
-//                        for (Tile[] t : maze.getMaze()) {
-//                            if (!mapShown) {
-//                                for (Tile tile : t) {
-//                                    tile.discover();
-//                                }
-//                            } else {
-//                                for (Tile tile : t) {
-//                                    tile.setVisible(false);
-//                                }
-//                            }
-//                        }
-                            /*setMapShown(!mapShown);
-                            updateDisplay();*/
+//
 
                     case KeyEvent.VK_MINUS:
                         lowerVolume();
@@ -433,7 +422,7 @@ public class Game {
 
     private void moveMonster() {
         if (monster.tryToWake(turnCount)) wakeMonster();
-        int[] translation = monster.getNextMove(player.getHPos(), player.getVPos());
+        int[] translation = monster.getNextMove(player.getHPos(), player.getVPos(), allowMonsterDiagonals);
         detectValidMove(monster, translation[0], translation[1]);
     }
 
