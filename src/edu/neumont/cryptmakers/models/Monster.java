@@ -18,11 +18,19 @@ public class Monster extends GameCharacter{
     }
 
     //Monster will move diagonally first. This means that it will move diagonally until one or both of the offsets == 0
-    public int[] getNextMove(int playerHPos, int playerVPos) {
+    public int[] getNextMove(int playerHPos, int playerVPos, boolean allowMonsterDiagonals) {
+
         int[] offset = offsetFromPlayer(playerHPos, playerVPos);
+
+                System.out.println(offset[0]+","+ offset[1]);
+        if(!allowMonsterDiagonals) {
+            if(offset[0] != 0 && offset[1] != 0) {
+                if(offset[0] > offset[1]) offset[1] = 0;
+                else offset[0] = 0;
+            }
+        }
         int hTrans = directionFromPath(offset[0]);
         int vTrans = directionFromPath(offset[1]);
-
         return new int[] {hTrans, vTrans};
     }
 
