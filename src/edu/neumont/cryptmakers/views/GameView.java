@@ -267,7 +267,7 @@ public class GameView {
                     }
                 } else if (t.getType() == TileEnum.PLAYER || t.getType() == TileEnum.START) {
                     t.discover();
-                } else {
+                }else {
                     t.setImage(is64x() ? getScaledImage(undiscoveredSprite) : undiscoveredSprite);
                 }
 
@@ -312,6 +312,9 @@ public class GameView {
     public static void displayText(String text) {
         TextDisplay.setText(text);
     }
+
+
+
 
     public static int promptForInt(String prompt, int min, int max) {
         if (max < min) {

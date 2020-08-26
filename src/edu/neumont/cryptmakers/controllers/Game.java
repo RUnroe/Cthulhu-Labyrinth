@@ -130,6 +130,7 @@ public class Game {
     }
     public void run() {
 //        createIntroWindow();
+
         currentBGM = lostMine;
         mazeSizePrompt();
         monsterTile = maze.getMaze()[monster.getVPos()][monster.getHPos()];
@@ -137,12 +138,15 @@ public class Game {
         view = new GameView();
         set64x(true);
         isGameRunning = true;
+
         currentBGM.play();
+
 //            sleepingOgre.play();
 
         for (int vPos = 0; vPos < maze.getXSize(); vPos++) {
             for (int hPos = 0; hPos < maze.getYSize(); hPos++) {
                 Tile t = maze.getMaze()[vPos][hPos];
+
                 switch (t.getType()) {
                     case PLAYER:
                         player.setHPos(hPos);
@@ -157,6 +161,7 @@ public class Game {
                 }
             }
         }
+        System.out.println("Run method check");
         updateDisplay();
 
 
@@ -408,7 +413,6 @@ public class Game {
         moveMonster();
         updateDisplay();
     }
-
 
     private void monsterController() {
 

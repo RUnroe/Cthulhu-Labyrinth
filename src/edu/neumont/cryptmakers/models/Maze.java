@@ -30,9 +30,22 @@ public class Maze {
         placeStart();
         placeTreasure();
         placeMonster();
+        showBorders();
 
         System.out.println("Maze generated");
     }
+
+    public void showBorders(){
+        for (int x = 0; x < getXSize(); x++) {
+            for (int y = 0; y < getYSize(); y++) {
+                if(x == 0 || y == 0 || x == getXSize() - 1  || y == getYSize() - 1){
+                    maze[x][y].setVisible(true);
+                }
+
+            }
+        }
+    }
+
 
     public void placeStart() {
         Random random = new Random();
