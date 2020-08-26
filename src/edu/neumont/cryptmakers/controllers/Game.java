@@ -162,6 +162,7 @@ public class Game {
                 }
             }
         }
+
         System.out.println("Run method check");
         updateDisplay();
 
@@ -464,6 +465,6 @@ public class Game {
                 imgSrc = "images/winner.png";
                 break;
         }
-        GameView.createEndWindow(imgSrc);
+        view.createEndWindow(imgSrc);
     }
 }

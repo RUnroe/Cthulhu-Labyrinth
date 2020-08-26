@@ -40,7 +40,7 @@ public class GameView {
     public static final ImageIcon undiscoveredSprite = new ImageIcon("images/sprite_darkness.png");
 
     private final int JFrameWidth = 700;
-    private final int JFrameHeight = 730;
+    private final int JFrameHeight = 830;
 
     private final CustomCanvas canvas = new CustomCanvas();
 
@@ -53,8 +53,9 @@ public class GameView {
             playerSprite = playerSprites[pImgNum <= 2 ? 0 : pImgNum <= 4 ? 1 :
                     pImgNum <= 6 ? 2 : pImgNum <= 8 ? 3 : 4];
         }
-
     }
+
+
 
     public static JTextPane getSpeedDisplay() {
         return SpeedDisplay;
@@ -69,7 +70,7 @@ public class GameView {
     }
 
     public static void setTreasureDisplay(JTextPane treasureDisplay) {
-        TreasureDisplay = TreasureDisplay;
+        TreasureDisplay = treasureDisplay;
     }
 
     public static JPanel getMapContainer() {
@@ -131,6 +132,7 @@ public class GameView {
 
     public void setupFrameView() {
         frame.setLayout(new BorderLayout());
+        //frame.setSize(new Dimension(JFrameWidth, JFrameHeight));
         frame.setMinimumSize(new Dimension(JFrameWidth, JFrameHeight));
         clickContainer.setLayout(new BoxLayout(clickContainer, BoxLayout.Y_AXIS));
         clickContainer.setFocusable(true);
@@ -157,7 +159,7 @@ public class GameView {
 //        frame.add(mapContainer);
 //        mapContainer.add(new JLabel(new ImageIcon("src/images/sprite_floor.png")));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
+        //frame.pack();
         frame.setVisible(true);
 
     }
@@ -302,7 +304,7 @@ public class GameView {
 
 
     public void displayTurnCount(int turnCount) {
-        this.ScoreDisplay.setText("Turn count: " + turnCount);
+        ScoreDisplay.setText("Turn count: " + turnCount);
     }
 //        canvas.paint(frame.getGraphics(), new ImageIcon("images/treasure.png"), 0,0);
 //        frame.validate();
@@ -395,8 +397,9 @@ public class GameView {
             return promptForInt(menuString, min, max);
         }
     }
-        public static void createEndWindow(String fileName) {
+        public void createEndWindow(String fileName) {
             frame.getContentPane().removeAll();
+
             //        frame.getContentPane().add(getTextDisplay());
             Container c = new JPanel();
             c.add(new JLabel(new ImageIcon(fileName)));
@@ -411,9 +414,12 @@ public class GameView {
             frame.revalidate();
             frame.repaint();
         }
-        private static void restartGame() {
+        private void restartGame() {
             frame.getContentPane().removeAll();
+            frame.revalidate();
+            frame.repaint();
             frame.dispose();
+
             Main.restart();
         }
 
