@@ -25,8 +25,8 @@ public class Monster extends GameCharacter{
                 System.out.println(offset[0]+","+ offset[1]);
         if(!allowMonsterDiagonals) {
             if(offset[0] != 0 && offset[1] != 0) {
-                if(offset[0] > offset[1]) offset[1] = 0;
-                else offset[0] = 0;
+                if(Math.abs(offset[0]) > Math.abs(offset[1])) offset[0] = 0;
+                else offset[1] = 0;
             }
         }
         int hTrans = directionFromPath(offset[0]);

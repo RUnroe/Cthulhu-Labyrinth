@@ -158,7 +158,6 @@ public class Game {
                 }
             }
         }
-        //monster.wakeUp();
         updateDisplay();
 
 
