@@ -141,7 +141,6 @@ public class Game {
         isGameRunning = true;
 
         currentBGM.play();
-
 //            sleepingOgre.play();
 
         for (int vPos = 0; vPos < maze.getXSize(); vPos++) {
@@ -332,28 +331,12 @@ public class Game {
                         monsterController();
                         updateDisplay();
                         break;
-//                    case KeyEvent.VK_S:
-//                        //Change speed
-//                        if (moveCount > 1) {
-//                            incrementTurn();
-//                        }
-//                        if (turnSpeed == 1) {
-//                            turnSpeed = 3;
-//                        } else {
-//                            turnSpeed = 1;
-//                        }
-//                        updateDisplay();
-//                        break;
                     case KeyEvent.VK_M:
                         if (m) {
                             m = false;
-//                            lostMine.pause();
-//                            sleepingOgre.pause();
                             currentBGM.pause();
                         } else {
                             m = true;
-//                            lostMine.resume();
-//                            sleepingOgre.resume();
                             currentBGM.resume();
                         }
 
@@ -371,9 +354,20 @@ public class Game {
                         System.out.println("Current Volume: " + currentBGM.getVolume());
                         break;
 
-//                    case KeyEvent.VK_R:
-//                        set64x(!is64x());
-//                        updateDisplay();
+                    case KeyEvent.VK_Z:for (Tile[] t : maze.getMaze()) {
+                           if (!mapShown) {
+                                for (Tile tile : t) {
+                                    tile.discover();
+                                }
+                            } else {
+                                for (Tile tile : t) {
+                                    tile.setVisible(false);
+                                }
+                            }
+                        }
+                        updateDisplay();
+break;
+
 
                 }
 
@@ -403,6 +397,7 @@ public class Game {
         moveMonster();
         updateDisplay();
     }
+
 
     private void monsterController() {
 

@@ -138,26 +138,18 @@ public class GameView {
         clickContainer.setFocusable(true);
         clickContainer.setMinimumSize(new Dimension(JFrameWidth, JFrameHeight));
         mapContainer.setLayout(new GridLayout(getMazeSize(), getMazeSize()));
-//        mapContainer.
-//        mapContainer.setSize(16*16, 16*16);
-//        JPanel tilePanel = new JPane( new GridLayout(0, 2, 5, 5) );
-//        tilePanel.add( new GameTile(...) );
-//        tilePanel.add( new GameTile(...) );
+
 
         JPanel wrapper = new JPanel(new GridBagLayout());
         wrapper.add(mapContainer, new GridBagConstraints());
         frame.add(wrapper, BorderLayout.NORTH);
-//        frame.add(wrapper, BorderLayout.LINE_END);
-
-//        setupJTextPaneComponent(MazeDisplay, BorderLayout.NORTH, 350);
         setupJTextPaneComponent(ScoreDisplay, BorderLayout.CENTER, 30);
         setupJTextPaneComponent(TextDisplay, BorderLayout.CENTER, 30);
         setupJTextPaneComponent(TreasureDisplay, BorderLayout.CENTER, 200);
         setupJTextPaneComponent(SpeedDisplay, BorderLayout.CENTER, 300);
 
         frame.add(clickContainer);
-//        frame.add(mapContainer);
-//        mapContainer.add(new JLabel(new ImageIcon("src/images/sprite_floor.png")));
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.pack();
         frame.setVisible(true);
@@ -167,32 +159,6 @@ public class GameView {
     public ImageIcon getScaledImage(ImageIcon imageIcon) {
         return new ImageIcon(imageIcon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
     }
-
-    //    private void setupKeyPressEventListener(JComponent component) {
-//        component.addKeyListener(new KeyAdapter() {
-//            public void keyPressed(KeyEvent e) {
-//                int keyCode = e.getKeyCode();
-//                switch(keyCode) {
-//                    case KeyEvent.VK_UP:
-//                        //Try to move up
-//                        displayText("up");
-//                        break;
-//                    case KeyEvent.VK_DOWN:
-//                        //Try to move down
-//                        displayText("down");
-//                        break;
-//                    case KeyEvent.VK_LEFT:
-//                        //Try to move left
-//                        displayText("left");
-//                        break;
-//                    case KeyEvent.VK_RIGHT :
-//                        //Try to move right
-//                        displayText("right");
-//                        break;
-//                }
-//            }
-//        });
-//    }
     private void setupJTextPaneComponent(JTextPane component, String pos, int height) {
         SimpleAttributeSet attrs = new SimpleAttributeSet();
         StyleConstants.setAlignment(attrs, StyleConstants.ALIGN_CENTER);
@@ -208,31 +174,7 @@ public class GameView {
 
     //Stubbed out from UML. Feel free to add any more methods that you need
     public void displayMaze(Maze m) {
-        /*String mazeString = "";
-        for (Tile[] tiles : m.getMazeArray()) {
-            for (Tile t : tiles) {
-                if (t.isVisible()) {
-                    if (t.getType() == TileEnum.WALL) {
-                        mazeString += "█████";
-                    } else if (t.getType() == TileEnum.PLAYER) {
-                        mazeString += "  P  ";
-                    } else if (t.getType() == TileEnum.TREASURE) {
-                        mazeString += "  T  ";
-                    } else if (t.getType() == TileEnum.ENEMY) {
-                        mazeString += "  E  ";
-                    } else if (t.getType() == TileEnum.PATH) {
-                        mazeString += "  ░  ";
-                    }
-                } else {
-                    mazeString += ("\u2589");
-                }
 
-            }
-            mazeString += "\n";
-        }
-        this.MazeDisplay.setText(mazeString);*/
-
-//        String mazeString = "";
         for (Tile[] tiles : m.getMaze()) {
             for (Tile t : tiles) {
                 TileEnum type = t.getType();
@@ -294,21 +236,14 @@ public class GameView {
             }
         }
 
-//        for (Tile[] tiles : m.getMaze()) {
-//            for (Tile t : tiles) {
-//                t.getImage().paintIcon(frame, frame.getGraphics(), 0,0);
-//            }
     }
 
-//    }
+
 
 
     public void displayTurnCount(int turnCount) {
         ScoreDisplay.setText("Turn count: " + turnCount);
     }
-//        canvas.paint(frame.getGraphics(), new ImageIcon("images/treasure.png"), 0,0);
-//        frame.validate();
-//        frame.repaint();
 
 
     public static void displayText(String text) {
