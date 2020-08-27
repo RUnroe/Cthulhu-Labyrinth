@@ -278,16 +278,7 @@ public class Maze {
 
         } //end while loop
 
-//        for(int i = 0; i < maze.length; i++){
-//            for(int j = 0; j < maze.length; j++){
-//                if(maze[i][j].getType() == TileEnum.PLAYER){
-//
-//                    playerX = i;
-//                    playerY = j;
-//
-//                }
-//            }
-//        }
+
 
         System.out.println("Method check");
         int distance = distanceFromTile(x,y,playerX, playerY);
@@ -310,25 +301,6 @@ public class Maze {
         int x = random.nextInt(getXSize());
         int y = random.nextInt(getYSize());
         boolean accessible = false;
-//        ArrayList<Tile> firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
-//
-//        while (maze[x][y].getType() != TileEnum.WALL || !accessible) {
-//            accessible = false;
-//            x = random.nextInt(getXSize());
-//            y = random.nextInt(getYSize());
-//            firstNeighbors = maze[x][y].neighborTiles(getMaze(), getXSize(), getYSize());
-//
-//            for (int neighbor = 0; neighbor < firstNeighbors.size(); neighbor++) {
-//                if ((maze[x][y].getType() == TileEnum.WALL) && firstNeighbors.get(neighbor).getType() == TileEnum.PATH || ) {
-//
-//                    accesible = true;
-//                    break;
-//
-//                }
-//            }
-//            if (accesible)
-//                break;
-//        }
 
         while(!accessible){
             if(maze[x][y].getType() == TileEnum.WALL){
@@ -343,15 +315,6 @@ public class Maze {
                 break;
         }
 
-//        for(int i = 0; i < maze.length; i++){
-//            for(int j = 0; j < maze.length; j++){
-//                if(maze[i][j].getType() == TileEnum.PLAYER){
-//                    playerX = i;
-//                    playerY = j;
-//
-//                }
-//            }
-//        }
 
         System.out.println("Monster method check");
 
