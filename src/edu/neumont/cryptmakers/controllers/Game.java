@@ -365,6 +365,7 @@ public class Game {
                                 }
                             }
                         }
+                        setMapShown(!mapShown);
                         updateDisplay();
 break;
 
