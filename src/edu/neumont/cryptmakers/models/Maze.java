@@ -344,7 +344,7 @@ public class Maze {
 //        }
 
         while(!accessible){
-            if(maze[x][y].getType() == TileEnum.WALL){
+            if(maze[x][y].getType() == TileEnum.WALL && (x != 0 || x != getXSize() - 1) && (y!= 0 || y != getYSize() - 1)){
                 accessible = true;
                 break;
             } else{
