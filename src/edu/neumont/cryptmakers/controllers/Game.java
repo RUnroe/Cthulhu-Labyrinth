@@ -129,6 +129,7 @@ public class Game {
         displayText("");
         run();
     }
+
     public void run() {
 //        createIntroWindow();
 
@@ -276,7 +277,7 @@ public class Game {
             } else if (character instanceof Monster) {
                 if (((Monster) character).isAwake()) {
                     maze.getMaze()[character.getVPos()][character.getHPos()].setType(((Monster) character).getPreviousTile());
-                    if( !((Monster) character).getWasVisible()){
+                    if (!((Monster) character).getWasVisible()) {
                         maze.getMaze()[character.getVPos()][character.getHPos()].setVisible(((Monster) character).getWasVisible());
                     }
 
@@ -354,20 +355,10 @@ public class Game {
                         System.out.println("Current Volume: " + currentBGM.getVolume());
                         break;
 
-                    case KeyEvent.VK_Z:for (Tile[] t : maze.getMaze()) {
-                           if (!mapShown) {
-                                for (Tile tile : t) {
-                                    tile.discover();
-                                }
-                            } else {
-                                for (Tile tile : t) {
-                                    tile.setVisible(false);
-                                }
-                            }
-                        }
+                    case KeyEvent.VK_Z:
                         setMapShown(!mapShown);
                         updateDisplay();
-break;
+                        break;
 
 
                 }
@@ -450,7 +441,7 @@ break;
 
     private void endGame(String endGameCondition) {
         String imgSrc = "";
-        switch (endGameCondition){
+        switch (endGameCondition) {
             case "lose":
                 imgSrc = "images/youaredead.png";
                 break;
