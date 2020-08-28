@@ -41,7 +41,7 @@ public class GameView {
     public static final ImageIcon undiscoveredSprite = new ImageIcon("images/sprite_darkness.png");
 
     private final int JFrameWidth = 700;
-    private final int JFrameHeight = 830;
+    private final int JFrameHeight = 880;
 
     private final CustomCanvas canvas = new CustomCanvas();
 
