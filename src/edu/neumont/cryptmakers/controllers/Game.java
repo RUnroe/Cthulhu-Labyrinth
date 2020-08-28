@@ -211,11 +211,7 @@ public class Game {
     }
 
     private void updateDisplay() {
-        GameView.getInstructionsDisplay().setText("Use the arrow Keys to move around to discover the maze. There is monster and treasure lying in wait within the walls.\n When the mon" +
-                "ster wakes, it will move at the same interval you do, depending on your speed. pre-treasure every 3 turns post-treasure every 1\n Find the treasure and escape before the monster gets to you to win\n " +
-                "If you are unable to collect the treasure and escape, you may leave after" +
-                " the monster is awake\n Use m to mute, and the + or - to " +
-                "increase or decrease volume");
+        GameView.getInstructionsDisplay().setText("Find the treasure and escape before the monster gets you\n Move: Arrow keys or wasd\n Volume controls: +, -, m");
         GameView.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
         GameView.getTreasureDisplay().setText(player.hasTreasure() ? "You have the treasure! Return to the start before the monster gets you!" : "");
         if (player.hasTreasure()) GameView.getTreasureDisplay().setForeground(Color.MAGENTA);
