@@ -211,6 +211,8 @@ public class Game {
     }
 
     private void updateDisplay() {
+        GameView.getInstructionsDisplay().setText("Use the arrow Keys to move around\n Find the treasure and escape before the monster gets to you to win\n Use m to mute, and the + or - to " +
+                "increase or decrease volume");
         GameView.getSpeedDisplay().setText("Speed: " + turnSpeed + " tiles");
         GameView.getTreasureDisplay().setText(player.hasTreasure() ? "You have the treasure! Return to the start before the monster gets you!" : "");
         if (player.hasTreasure()) GameView.getTreasureDisplay().setForeground(Color.MAGENTA);

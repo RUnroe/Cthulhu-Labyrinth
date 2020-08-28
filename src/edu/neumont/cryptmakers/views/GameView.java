@@ -29,6 +29,7 @@ public class GameView {
     private static JTextPane ScoreDisplay = new JTextPane();
     private static JTextPane TreasureDisplay = new JTextPane();
     private static JTextPane SpeedDisplay = new JTextPane();
+    private static JTextPane InstructionsDisplay = new JTextPane();
     private static JLabel[][] imageLabels;
     public static final ImageIcon[] playerSprites = new ImageIcon[5];
     public static ImageIcon playerSprite;
@@ -63,6 +64,14 @@ public class GameView {
 
     public static void setSpeedDisplay(JTextPane speedDisplay) {
         SpeedDisplay = speedDisplay;
+    }
+
+    public static JTextPane getInstructionsDisplay() {
+        return InstructionsDisplay;
+    }
+
+    public static void setInstructionsDisplay(JTextPane instructionsDisplay) {
+        InstructionsDisplay = instructionsDisplay;
     }
 
     public static JTextPane getTreasureDisplay() {
@@ -147,6 +156,7 @@ public class GameView {
         setupJTextPaneComponent(TextDisplay, BorderLayout.CENTER, 30);
         setupJTextPaneComponent(TreasureDisplay, BorderLayout.CENTER, 200);
         setupJTextPaneComponent(SpeedDisplay, BorderLayout.CENTER, 300);
+        setupJTextPaneComponent(InstructionsDisplay, BorderLayout.CENTER, 400);
 
         frame.add(clickContainer);
 
