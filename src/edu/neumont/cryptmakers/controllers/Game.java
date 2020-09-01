@@ -266,6 +266,7 @@ public class Game {
                             displayText("It's a draw, next time get the treasure to win!");
                             endGame("escape");
                             changeBGM(retroNoHope);
+
                         }
 
                     }
@@ -342,7 +343,6 @@ public class Game {
                             currentBGM.resume();
                         }
 
-
                         break;
 //
 
@@ -396,7 +396,9 @@ public class Game {
 
         switch (monster.distanceFromPlayer(player.getHPos(), player.getVPos())) {
             case 0:
+                currentBGM.stop();
                 loseGame();
+
                 break;
             case 1:
                 wakeMonster();
